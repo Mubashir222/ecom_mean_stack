@@ -1,0 +1,182 @@
+<div class="mb-10">
+    <h1 class="text-2xl font-bold">Buttons</h1>
+
+    <button class="block w-[100%] my-5 py-2 text-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+        Full width button
+    </button>
+
+    <div>
+        <h3 class="text-xl text-gray-600 font-bold">Sizes</h3>
+        <button class="my-5 mx-2 px-8 py-4 text-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+            Extra Large
+        </button>
+        <button class="my-5 mx-2 px-5 py-3 text-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+            Large
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+            Regular
+        </button>
+        <button disabled class="my-5 mx-2 px-5 py-2 text-center cursor-not-allowed bg-indigo-400 text-white rounded-lg">
+            Disable
+        </button>
+        <button class="my-5 mx-2 px-3 py-0.5 text-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+            Small
+        </button>
+    </div>
+
+    <div>
+        <h3 class="text-xl text-gray-600 font-bold">Colors</h3>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-indigo-700 hover:bg-indigo-600 text-white rounded-lg">
+            Indigo
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-red-600 hover:bg-red-500 text-white rounded-lg">
+            Red
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-green-700 hover:bg-green-600 text-white rounded-lg">
+            Green
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-blue-600 hover:bg-blue-500 text-white rounded-lg">
+            Blue
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-orange-600 hover:bg-orange-500 text-white rounded-lg">
+            Orange
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-black hover:bg-gray-800 text-white rounded-lg">
+            Black
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg- hover:bg-gray-800 text-white rounded-lg">
+            Black
+        </button>
+    </div>
+
+    <div>
+        <h3 class="text-xl text-gray-600 font-bold">Icons</h3>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+            Icon Right
+            <fa-icon [icon]="faHeart" class="ms-2"></fa-icon>
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+            <fa-icon [icon]="faHeart" class="mr-2"></fa-icon>
+            Icon Right
+        </button>
+        <button class="my-5 mx-2 px-3 py-2 text-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+            <fa-icon [icon]="faHeart"></fa-icon>
+        </button>
+        <button class="my-5 mx-2 px-3 py-2 text-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg">
+            <fa-icon [icon]="faPen"></fa-icon>
+        </button>
+    </div>
+
+    <div>
+        <h3 class="text-xl text-gray-600 font-bold">Styles</h3>
+        <button class="my-5 mx-2 px-5 py-2 text-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
+            Hover
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-600 font-semibold hover:text-white rounded-lg">
+            Outline
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center border-2 border-indigo-600 bg-indigo-600 hover:bg-white text-white hover:text-indigo-600 font-semibold rounded-lg">
+            Hover Outline
+        </button>
+        <button class="my-5 mx-2 px-5 py-2 text-center hover:shadow-2xl hover:shadow-indigo-600 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg">
+            Shadow
+        </button>
+    </div>
+
+    <div>
+        <h3 class="text-xl text-gray-600 font-bold">Animation</h3>
+
+        <div class="grid grid-cols-6 my-5 gap-5">
+
+            <div>
+                <button class="relative mx-2 inline-block text-lg group">
+                    <span class="relative z-10 block px-5 py-3 overflow-hidden font-medium leading-tight text-indigo-600 transition-colors duration-300 ease-out border-2 border-indigo-600 rounded-lg group-hover:text-white">
+                    <span class="absolute inset-0 w-full h-full px-5 py-3 rounded-lg bg-gray-50"></span>
+                    <span class="absolute left-0 w-48 h-48 -ml-2 transition-all duration-300 origin-top-right -rotate-90 -translate-x-full translate-y-12 bg-indigo-600 group-hover:-rotate-180 ease"></span>
+                    <span class="relative">Button</span>
+                    </span>
+                    <span class="absolute bottom-0 right-0 w-full h-12 -mb-1 -mr-1 transition-all duration-200 ease-linear bg-indigo-600 rounded-lg group-hover:mb-0 group-hover:mr-0" data-rounded="rounded-lg"></span>
+                </button>
+            </div>
+
+            <div>
+                <button class="relative mx-2 inline-flex items-center justify-start py-3 pl-4 pr-12 overflow-hidden font-semibold text-indigo-600 transition-all duration-150 ease-in-out rounded hover:pl-10 hover:pr-6 bg-gray-100 group">
+                    <span class="absolute bottom-0 left-0 w-full h-1 transition-all duration-150 ease-in-out bg-indigo-600 group-hover:h-full"></span>
+                    <span class="absolute right-0 pr-4 duration-200 ease-out group-hover:translate-x-12">
+                    <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </span>
+                    <span class="absolute left-0 pl-2.5 -translate-x-12 group-hover:translate-x-0 ease-out duration-200">
+                    <svg class="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </span>
+                    <span class="relative w-full text-left transition-colors duration-200 ease-in-out group-hover:text-white">Button</span>
+                </button>    
+            </div>
+            <div>
+                <button class="mx-2 px-5 py-2.5 relative rounded group overflow-hidden font-medium bg-purple-50 text-indigo-600 inline-block">
+                    <span class="absolute top-0 left-0 flex w-full h-0 mb-0 transition-all duration-200 ease-out transform translate-y-0 bg-indigo-600 group-hover:h-full opacity-90"></span>
+                    <span class="relative group-hover:text-white">Button</span>
+                </button>
+                </div>
+            <div>
+                <button class="mx-2 relative px-5 py-3 overflow-hidden font-medium text-indigo-600 bg-indigo-100 border border-indigo-100 rounded-lg shadow-inner group">
+                    <span class="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-2 border-indigo-600 group-hover:w-full ease"></span>
+                    <span class="absolute bottom-0 right-0 w-0 h-0 transition-all duration-200 border-b-2 border-indigo-600 group-hover:w-full ease"></span>
+                    <span class="absolute top-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-indigo-600 group-hover:h-full ease"></span>
+                    <span class="absolute bottom-0 left-0 w-full h-0 transition-all duration-300 delay-200 bg-indigo-600 group-hover:h-full ease"></span>
+                    <span class="absolute inset-0 w-full h-full duration-300 delay-300 bg-indigo-600 opacity-0 group-hover:opacity-100"></span>
+                    <span class="relative transition-colors duration-300 delay-200 group-hover:text-white ease">Button</span>
+                </button>
+            </div>
+            <div>
+                <button class="mx-2 relative inline-flex items-center px-8 py-3 overflow-hidden text-lg font-medium text-indigo-600 border-2 border-indigo-600 rounded-md hover:text-white group hover:bg-gray-50">
+                    <span class="absolute left-0 block w-full h-0 transition-all bg-indigo-600 opacity-100 group-hover:h-full top-1/2 group-hover:top-0 duration-400 ease"></span>
+                    <span class="absolute right-0 flex items-center justify-start w-10 h-10 duration-300 transform translate-x-full group-hover:translate-x-0 ease">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                    </span>
+                    <span class="relative">Button</span>
+                </button>
+            </div>    
+    
+            <div>
+                <button class="mx-2 relative inline-flex items-center justify-start px-6 py-3 overflow-hidden font-medium transition-all bg-indigo-500 rounded-xl group">
+                    <span class="absolute top-0 right-0 inline-block w-4 h-4 transition-all duration-500 ease-in-out bg-indigo-700 rounded group-hover:-mr-4 group-hover:-mt-4">
+                    <span class="absolute top-0 right-0 w-5 h-5 rotate-45 translate-x-1/2 -translate-y-1/2 bg-white"></span>
+                    </span>
+                    <span class="absolute bottom-0 left-0 w-full h-full transition-all duration-500 ease-in-out delay-200 -translate-x-full translate-y-full bg-indigo-600 rounded-2xl group-hover:mb-12 group-hover:translate-x-0"></span>
+                    <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-white">Button</span>
+                </button>
+            </div>
+    
+            <div>
+                <button class="mx-2 relative inline-flex items-center justify-center px-10 py-3 overflow-hidden font-mono font-medium tracking-tighter text-white bg-gray-800 rounded-lg group">
+                    <span class="absolute w-0 h-0 transition-all duration-500 ease-out bg-indigo-500 rounded-full group-hover:w-56 group-hover:h-56"></span>
+                    <span class="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-30 bg-gradient-to-b from-transparent via-transparent to-gray-700"></span>
+                    <span class="relative">Button</span>
+                </button>
+            </div>
+
+            <div>
+                <button class="mx-2 relative inline-flex items-center justify-start px-5 py-3 overflow-hidden font-bold rounded-full group">
+                    <span class="w-32 h-32 rotate-45 translate-x-12 -translate-y-2 absolute left-0 top-0 bg-white opacity-[3%]"></span>
+                    <span class="absolute top-0 left-0 w-48 h-48 -mt-1 transition-all duration-500 ease-in-out rotate-45 -translate-x-56 -translate-y-24 bg-indigo-600 opacity-100 group-hover:-translate-x-8"></span>
+                    <span class="relative w-full text-left text-indigo-600 transition-colors duration-200 ease-in-out group-hover:text-white">Button</span>
+                    <span class="absolute inset-0 border-2 border-indigo-600 rounded-full"></span>
+                    </button>
+            </div>
+
+            <div>
+                <button class="relative group overflow-hidden px-6 h-12 border-2 border-indigo-500 rounded-full">
+                    <div aria-hidden="true" class="transition font-semibold duration-300 group-hover:-translate-y-12">
+                        <div class="h-12 flex items-center justify-center">
+                          <span class="text-indigo-600">Click</span>
+                        </div>
+                        <div class="h-12 flex items-center justify-center">
+                          <span class="text-indigo-600">Here</span>
+                        </div>
+                    </div>
+                  </button>
+            </div>
+
+        </div>
+    </div>
+</div>
