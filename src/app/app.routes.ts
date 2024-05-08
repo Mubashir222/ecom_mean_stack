@@ -5,7 +5,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { FormsComponent } from './pages/forms/forms.component';
 import { ButtonsComponent } from './pages/buttons/buttons.component';
 import { CardsComponent } from './pages/cards/cards.component';
-import { DashboardSideBarComponent } from './pages/dashboard-side-bar/dashboard-side-bar.component';
+import { MultipleFilesComponent } from './pages/multiple-files/multiple-files.component';
 
 export const routes: Routes = [
     {
@@ -20,27 +20,25 @@ export const routes: Routes = [
         component: LayoutComponent,
         children: [
             {
-                path: '',
-                component: DashboardSideBarComponent,
-                children: [
-                    {
-                        path: 'dashboard',
-                        component: DashboardComponent,
-                    },
-                    {
-                        path: 'forms',
-                        component: FormsComponent
-                    },
-                    {
-                        path: 'buttons',
-                        component: ButtonsComponent
-                    },
-                    {
-                        path: 'cards',
-                        component: CardsComponent
-                    },
-                ]
-            }
+                path: 'dashboard',
+                component: DashboardComponent,
+            },
+            {
+                path: 'forms',
+                component: FormsComponent
+            },
+            {
+                path: 'buttons',
+                component: ButtonsComponent
+            },
+            {
+                path: 'cards',
+                component: CardsComponent
+            },
+            {
+                path: 'multiFiles',
+                component: MultipleFilesComponent
+            },
         ]
     }
 ];

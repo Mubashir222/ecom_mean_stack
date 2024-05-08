@@ -10,6 +10,8 @@ const UploadImageRoutes = require('./routes/UploadImgRoutes');
 const BlogRoutes = require("./routes/BlogRoutes")
 const CommonRoutes = require("./routes/CommonRoutes")
 const ContactRoutes = require("./routes/ContactRoutes")
+const UserApplication = require("./routes/UserApplyFormRoutes")
+const MultiFiles = require("./routes/MultiFilesRoutes")
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -36,6 +38,8 @@ app.use('/data', UploadImageRoutes);
 app.use('/blog', BlogRoutes);
 app.use('/common', CommonRoutes);
 app.use('/contact', ContactRoutes);
+app.use('/application', UserApplication);
+app.use('/multi-files', MultiFiles);
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on ${process.env.PORT}`);

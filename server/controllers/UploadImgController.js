@@ -5,7 +5,7 @@ const path = require('path');
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       // Adjust the path based on your project directory structure
-      cb(null, path.join(__dirname, '../../client/public/uploads/'));
+      cb(null, path.join(__dirname, '../../src/assets/images/'));
     },
     filename: (req, file, cb) => {
       const filename = `${Date.now()}-${file.originalname}`;
@@ -29,7 +29,7 @@ exports.uploadImg = async(req, res) => {
       });
     });
     if (req.file && req.file.filename){
-      const imagePath = path.join('/uploads/', req.file.filename);
+      const imagePath = path.join('/assets/images/', req.file.filename);
   
       console.log(imagePath);
       

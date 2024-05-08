@@ -1,1 +1,18 @@
-<h1>Dashboard</h1>
+<div *ngIf="userDetails" class="relative overflow-x-auto border-2 shadow-md sm:rounded-lg">
+    <ng-container *ngFor="let user of userDetails; let i = index ">
+        <div class="grid grid-cols-12 p-5 gap-5 mb-4">
+            <div class="col-span-8">
+                <h1 class="text-2xl text-indigo-600 font-bold">{{user.firstname + " " + user.lastname}}</h1>
+                <h3 class="text-sm mb-4 text-gray-400 font-semibold">{{user.email}}</h3>
+                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Phone No:</span> {{user.phoneNo}}</p>
+                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Gender:</span> {{user.gender}}</p>
+                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Website Url:</span> {{user.websiteUrl}}</p>
+                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Company:</span> {{user.company}}</p>
+                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Created at:</span> {{user.createdAt.split("T")[0]}}</p>
+            </div>
+            <div class="col-span-4 p-4">
+                <img src={{user.profileImg}} class=" rounded-lg" alt="">
+            </div>
+        </div>
+    </ng-container>
+</div>
