@@ -6,8 +6,8 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideToastr } from 'ngx-toastr';
 
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async"
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideHttpClient(), provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideToastr()]
+  providers: [provideHttpClient(withFetch()), provideRouter(routes), provideClientHydration(), provideAnimationsAsync(), provideToastr()]
 };

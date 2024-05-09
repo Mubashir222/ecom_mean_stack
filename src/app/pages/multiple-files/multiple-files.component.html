@@ -3,11 +3,13 @@
     <label class="block mb-2 text-sm font-medium text-gray-900" for="multifiles">Upload files</label>
     <input type="file" multiple (change)="selectFiles($event)" id="multifiles" class="block w-full text-md text-gray-900 file:bg-black file:text-white border border-gray-300 rounded-lg cursor-pointer bg-gray-50">
   </div>
-
+  
+  <!-- [disabled]="!selectedFiles" -->
   <div class="col-4">
     <button
       class="py-2 px-5 my-4 rounded-lg text-white bg-green-700"
-      [disabled]="!selectedFiles"
+      [disabled]="!selectedFiles || selectedFiles.length === 0"
+      [class.cursor-not-allowed] = "!selectedFiles || selectedFiles.length === 0"
       (click)="uploadFiles()"
     >
       Upload
@@ -15,20 +17,10 @@
   </div>
 </div>
 
-@if (message.length) {
-<div class="alert alert-secondary my-3" role="alert">
-  <ul>
-    @for (msg of message; track i; let i = $index) {
-    <li>{{ msg }}</li>
-    }
-  </ul>
-</div>
-}
-
 <div class="card mt-3">
   <div class="card-header text-indigo-600 font-semibold mb-5">List of Files</div>
   <ul class="list-group list-group-flush">
-    @for (file of fileInfos; track file.name) {
+    @for (file of fileInfos.reverse(); track file.name) {
       @if (!fileInfos){
       <li class="list-group-item bg-white py-1 ps-5 rounded-lg mb-4">No files selected</li>
       }

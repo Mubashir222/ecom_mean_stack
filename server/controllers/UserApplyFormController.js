@@ -4,7 +4,7 @@ const isEmail = require("validator/lib/isEmail")
 
 exports.insertUserInformation = async (req, res) => {
   try {
-    const { firstname, lastname, email, company, phoneNo, profileImg, websiteUrl, gender, password, confirmPassword } = req.body;
+    const { firstname, lastname, email, company, religion, phoneNo, profileImg, websiteUrl, gender, password, confirmPassword } = req.body;
 
     if (firstname.length < 3) {
       return res.status(400).json({ error: 'First Name must be at least 3 characters long' });
@@ -41,6 +41,7 @@ exports.insertUserInformation = async (req, res) => {
         websiteUrl,
         password: hashedPassword,
         gender,
+        religion,
         profileImg
     });
 

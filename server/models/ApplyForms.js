@@ -5,6 +5,7 @@ const ApplyFormSchema = new mongoose.Schema({
     lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true, index: true },
     password: { type: String, required: true },
+    religion: { type: String, default: "" },
     company: { type: String, default: ""},
     websiteUrl: { type: String, default: "/uploads/default-profile.jpg" },
     phoneNo: { type: String, default: "0300XXXXXXX"},

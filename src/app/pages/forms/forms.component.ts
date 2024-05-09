@@ -22,6 +22,18 @@ export class FormsComponent {
   userForm: FormGroup;
   uploadImg: File | null = null;
   showImg: string | null = null;
+  selectedFiles?: FileList;
+  fileInfos: any[] = [];
+  dropdownOpen = false;
+  dropdownValue = "Religion";
+
+  updateButtonValue(value: any): void {
+    this.dropdownValue = value;
+    this.userForm.patchValue({ religion: value });
+    console.log(this.userForm.value)
+    this.dropdownOpen = false;
+  }
+
 
   constructor(private formBuilder: FormBuilder, private userService: UserServices, private toastr: ToastrService) {
     this.userForm = this.formBuilder.group({
@@ -30,6 +42,7 @@ export class FormsComponent {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
+      religion: '',
       company: '',
       phoneNo: '',
       websiteUrl: '',
@@ -38,6 +51,35 @@ export class FormsComponent {
     });
   }  
 
+
+  selectFiles(event: any): void {
+    this.selectedFiles = event.target.files;
+  }
+
+  uploadFiles(): void {
+    if (this.selectedFiles) {
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        this.upload(this.selectedFiles[i]);
+      }
+      this.selectedFiles = undefined;
+    }
+  }
+
+  upload(file: File): void {
+    if (file) {
+      this.userService.uploadFiles(file).subscribe({
+        next: (response) => {
+          const msg = file.name + ": Successful!";
+          this.toastr.success(msg);
+        },
+        error: (error) => {
+          console.error('Error uploading file:', error);
+          const msg = file.name + ": Failed!";
+          this.toastr.error(msg);
+        }
+    });
+    }
+  }
 
   onSubmit() {  
     let formIsValid = true;
@@ -56,7 +98,7 @@ export class FormsComponent {
     if (formIsValid) {
       this.userService.submitForm(this.userForm.value).subscribe({
         next: (response) => {
-          console.log(response);
+          this.uploadFiles();
           this.toastr.success(response.message);
           this.userForm.reset();
         },
@@ -87,17 +129,17 @@ export class FormsComponent {
           if(response.imagePath) {
             // Store the imagePath in the profileImg field of userForm
             this.userForm.patchValue({ profileImg: response.imagePath });
-            this.toastr.success('File uploaded successfully.');
+            this.toastr.success('Image stored successfully.');
           }         
         },
         error: (error) => {
-          console.error('Error uploading file:', error);
+          console.error('Error storing file:', error);
         }
       });
       } else {
         this.uploadImg = null;
         this.showImg = null;
-        this.toastr.error('File size should be less than or equal to 2MB.');
+        this.toastr.error('Image size should be less than or equal to 2MB.');
       }
     }
   }
@@ -105,4 +147,9 @@ export class FormsComponent {
     return this.showImg || '';
   }
   
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
 }

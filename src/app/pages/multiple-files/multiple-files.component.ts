@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserServices } from '../../services/user.services';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-multiple-files',
@@ -15,7 +16,7 @@ export class MultipleFilesComponent implements OnInit {
   message: string[] = [];
   fileInfos: any[] = [];
 
-  constructor(private uploadService: UserServices) { }
+  constructor(private uploadService: UserServices, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.getFileInfos();
@@ -27,8 +28,6 @@ export class MultipleFilesComponent implements OnInit {
   }
 
   uploadFiles(): void {
-    this.message = [];
-
     if (this.selectedFiles) {
       for (let i = 0; i < this.selectedFiles.length; i++) {
         this.upload(this.selectedFiles[i]);
@@ -39,30 +38,31 @@ export class MultipleFilesComponent implements OnInit {
 
   upload(file: File): void {
     if (file) {
-      this.uploadService.uploadFiles(file).subscribe(
-        (response: any) => {
-          const msg = file.name + ": Successful!";
-          this.message.push(msg);
+      this.uploadService.uploadFiles(file).subscribe({
+        next: (response) => {
+          const msg = file.name + ": Successfuly Upload!";
+          this.toastr.success(msg);
+          this.selectedFiles = undefined;
           this.getFileInfos(); // Refresh file list after successful upload
         },
-        (error: any) => {
+        error: (error) => {
           console.error('Error uploading file:', error);
           const msg = file.name + ": Failed!";
-          this.message.push(msg);
+          this.toastr.error(msg);
         }
-      );
+    });
     }
   }
 
   getFileInfos(): void {
-    this.uploadService.getFiles().subscribe(
-      (response: any) => { // Changed 'next' to '(response: any) =>'
+    this.uploadService.getFiles().subscribe({
+      next: (response) => {
         this.fileInfos = response.files;
       },
-      (error: any) => { // Removed 'error:' and the colon
+      error: (error) => { 
         console.error('Error fetching file info:', error);
       }
-    );
+    });
   }
   
 }
