@@ -35,4 +35,21 @@ export class UserServices {
   getFiles() {
     return this.httpClient.get<any>(this.apiUrl + 'multi-files/get-files');
   }
+
+
+  addDropdownOption(data: any) {
+    return this.httpClient.post<any>(this.apiUrl + 'dropdown/add', data);
+  }
+
+  getDropdownOptions() {
+    return this.httpClient.get<any>(this.apiUrl + 'dropdown/getAll');
+  }
+
+  updateDropdownOption(data: any) {
+    return this.httpClient.put<any>(this.apiUrl + 'dropdown/update', data);
+  }
+
+  deleteDropdownOption(data: any) {
+    return this.httpClient.delete<any>(this.apiUrl + `dropdown/delete/${data}`);
+  }
 }

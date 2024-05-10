@@ -1,0 +1,55 @@
+<div class="mb-10">
+    <h1 class="text-center text-3xl text-indigo-600 font-semibold mb-2 font-serif">Add DropDown Option</h1>
+    <div class="my-10 grid grid-cols-12 gap-4">
+        <div class="col-span-10">
+            <input type="text" id="option" (keyup)="handleChangeOption($event)" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Here write your dropdown option..." required />
+        </div>
+        <button (click)="onSubmit()" [disabled]="isDisabled" [class.cursor-not-allowed]="isDisabled===true" [class.cursor.pointer]="isDisabled===false" class="col-span-2 bg-indigo-600 px-5 py-2 rounded-lg text-white">
+            Add
+        </button>
+    </div>
+    
+    
+    <div class="relative">
+        <button (click)="toggleDropdown()" class="block text-indigo-600 border-2 border-indigo-600 font-medium rounded-lg text-sm md:w-[200px] w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        {{ dropdownValue }}
+        </button>
+        <div *ngIf="dropdownOpen" class="absolute top-10 p-2 sm:w-[200px] w-auto bg-white border border-gray-300 rounded-lg shadow-lg">
+            @for (item of dropdownOptions; track $index) {
+                <button (click)="updateButtonValue(item.option)" [class.bg-indigo-600]="dropdownValue === item.option" [class.text-white]="dropdownValue === item.option" [class.transparent]="dropdownValue !== item.option" value={{item.option}} class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">
+                    {{ item.option }}
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="mb-10">
+    <h1 class="text-center text-3xl text-indigo-600 font-semibold mb-10 font-serif">Edit & Delete DropDown Option</h1>
+    <div *ngFor="let item of dropdownOptions; let i = index">
+        <ng-container *ngIf="isEdit !== i">
+            <div class="grid grid-cols-2 gap-5 mb-2">
+                <p [class.border-green-600]="isEdit === i" class="text-center text-gray-600 mb-2 py-1 px-2 rounded-lg border-2 border-gray-300 cursor-pointer hover:border-indigo-600">
+                    {{ item.option }}
+                </p>
+                <div>                    
+                    <button (click)="startEditing(i)" class="bg-green-600 w-32 py-1 mx-2 rounded-md text-white">Edit Option</button>
+                    <button (click)="deleteOption(item._id)" class="bg-red-600 w-32 py-1 mx-2 rounded-md text-white">Delete Option</button>
+                </div>
+    
+            </div>
+        </ng-container>
+        <ng-container *ngIf="isEdit === i">
+            <div class="grid grid-cols-2 gap-5 mb-2">
+
+                <input type="text" name={{item.option}} [(ngModel)]="item.option" class="px-2 py-1 mb-2 text-center bg-gray-50 border-2 border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Edit option..." />
+
+                <div>
+                    <button (click)="updateOption(item._id, item.option)" class="bg-indigo-600 w-32 py-1 mx-2 rounded-md text-white">Update</button>
+                    <button (click)="cancelEditing()" class="bg-gray-600 w-32 py-1 mx-2 rounded-md text-white">Cancel</button>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>

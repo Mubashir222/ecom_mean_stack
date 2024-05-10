@@ -12,6 +12,7 @@ const CommonRoutes = require("./routes/CommonRoutes")
 const ContactRoutes = require("./routes/ContactRoutes")
 const UserApplication = require("./routes/UserApplyFormRoutes")
 const MultiFiles = require("./routes/MultiFilesRoutes")
+const Dropdown = require("./routes/DropdownOptionRoutes")
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -40,6 +41,7 @@ app.use('/common', CommonRoutes);
 app.use('/contact', ContactRoutes);
 app.use('/application', UserApplication);
 app.use('/multi-files', MultiFiles);
+app.use('/dropdown', Dropdown)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on ${process.env.PORT}`);

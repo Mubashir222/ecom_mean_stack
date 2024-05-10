@@ -6,6 +6,7 @@ import { FormsComponent } from './pages/forms/forms.component';
 import { ButtonsComponent } from './pages/buttons/buttons.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { MultipleFilesComponent } from './pages/multiple-files/multiple-files.component';
+import { DropdownComponent } from './pages/dropdown/dropdown.component';
 
 export const routes: Routes = [
     {
@@ -38,6 +39,10 @@ export const routes: Routes = [
             {
                 path: 'multiFiles',
                 component: MultipleFilesComponent
+            },
+            {
+                path: 'dropdowns',
+                component: DropdownComponent
             },
         ]
     }
