@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { UserServices } from '../../services/user.services';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { faTrash, faDownload } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-multiple-files',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FontAwesomeModule],
   templateUrl: './multiple-files.component.html',
   styleUrls: ['./multiple-files.component.css']
 })
@@ -15,6 +17,8 @@ export class MultipleFilesComponent implements OnInit {
   selectedFiles?: FileList;
   message: string[] = [];
   fileInfos: any[] = [];
+  faTrash = faTrash;
+  faDownload = faDownload;
 
   constructor(private uploadService: UserServices, private toastr: ToastrService) { }
 
@@ -61,6 +65,21 @@ export class MultipleFilesComponent implements OnInit {
       },
       error: (error) => { 
         console.error('Error fetching file info:', error);
+      }
+    });
+  }
+  
+  deleteFile(file: any): void {
+    this.uploadService.deleteFile(file._id).subscribe({
+      next: (response) => {
+        const msg = file.file.split("files\\")[1] + ": Successfully Deleted!";
+        this.toastr.success(msg);
+        this.getFileInfos(); // Refresh file list after successful deletion
+      },
+      error: (error) => {
+        console.error('Error deleting file:', error);
+        const msg = file.name + ": Failed to Delete!";
+        this.toastr.error(msg);
       }
     });
   }

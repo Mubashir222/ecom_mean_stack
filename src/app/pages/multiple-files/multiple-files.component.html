@@ -4,7 +4,6 @@
     <input type="file" multiple (change)="selectFiles($event)" id="multifiles" class="block w-full text-md text-gray-900 file:bg-black file:text-white border border-gray-300 rounded-lg cursor-pointer bg-gray-50">
   </div>
   
-  <!-- [disabled]="!selectedFiles" -->
   <div class="col-4">
     <button
       class="py-2 px-5 my-4 rounded-lg text-white bg-green-700"
@@ -20,13 +19,22 @@
 <div class="card mt-3">
   <div class="card-header text-indigo-600 font-semibold mb-5">List of Files</div>
   <ul class="list-group list-group-flush">
-    @for (file of fileInfos.reverse(); track file.name) {
-      @if (!fileInfos){
+    @if (!fileInfos){
       <li class="list-group-item bg-white py-1 ps-5 rounded-lg mb-4">No files selected</li>
-      }
-      @else {
-        <li class="list-group-item bg-white py-2 ps-5 border-2 border-x-indigo-600 rounded-lg mb-4">
-          <a href="{{ file.url }}">{{ file.file.split("files\\")[1] }}</a>
+    }
+    @else {
+      <!-- @for (file of fileInfos.reverse(); track file.name) { -->
+      @for (file of fileInfos.slice().reverse(); track $index) {
+        <li class="list-group-item flex justify-between bg-white py-2 ps-5 border-2 border-x-indigo-600 rounded-lg mb-4">
+          <p>{{ file.file.split("files\\")[1] }}</p>
+          <div>
+            <a href={{file.file}} download>
+              <fa-icon [icon]="faDownload" class="text-lg mr-5 text-blue-600"></fa-icon>  
+            </a>
+            <button (click)="deleteFile(file)">
+              <fa-icon [icon]="faTrash" class="text-lg mr-5 text-red-600"></fa-icon>
+            </button>
+          </div>
         </li>
       }
     }

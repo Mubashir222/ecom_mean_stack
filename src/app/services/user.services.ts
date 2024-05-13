@@ -36,6 +36,10 @@ export class UserServices {
     return this.httpClient.get<any>(this.apiUrl + 'multi-files/get-files');
   }
 
+  deleteFile(file: any) {
+    return this.httpClient.delete<any>(this.apiUrl + `multi-files/delete-file/${file}`);
+  }
+
 
   addDropdownOption(data: any) {
     return this.httpClient.post<any>(this.apiUrl + 'dropdown/add', data);
@@ -52,4 +56,14 @@ export class UserServices {
   deleteDropdownOption(data: any) {
     return this.httpClient.delete<any>(this.apiUrl + `dropdown/delete/${data}`);
   }
+
+  addOptionData(data: any) {
+    return this.httpClient.post<any>(this.apiUrl + 'dropdown-option-data/add', data);
+  }
+
+  getOptionData() {
+    return this.httpClient.get<any>(this.apiUrl + 'dropdown-option-data/getAll');
+  }
+
+
 }
