@@ -7,6 +7,7 @@ import { ButtonsComponent } from './pages/buttons/buttons.component';
 import { CardsComponent } from './pages/cards/cards.component';
 import { MultipleFilesComponent } from './pages/multiple-files/multiple-files.component';
 import { DropdownComponent } from './pages/dropdown/dropdown.component';
+import { DevExpressComponent } from './pages/dev-express/dev-express.component';
 
 export const routes: Routes = [
     {
@@ -44,6 +45,10 @@ export const routes: Routes = [
                 path: 'dropdowns',
                 component: DropdownComponent
             },
+            {
+                path: 'devExpress',
+                component: DevExpressComponent
+            }
         ]
     }
 ];

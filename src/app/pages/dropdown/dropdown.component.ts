@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServices } from '../../services/user.services';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DropdownServices } from './dropdown.service';
 
 
 @Component({
@@ -36,7 +36,7 @@ export class DropdownComponent implements OnInit{
 
 
 
-  constructor(private userServices: UserServices, private toastr: ToastrService) {}
+  constructor(private dropdownServices: DropdownServices, private toastr: ToastrService) {}
 
   ngOnInit() {
     this.getOptions();
@@ -65,7 +65,7 @@ export class DropdownComponent implements OnInit{
     if (this.option === "") {
       this.toastr.error("Please select an option", "Error");
     } else {
-      this.userServices.addDropdownOption({ option: this.option }).subscribe({
+      this.dropdownServices.addDropdownOption({ option: this.option }).subscribe({
         next: (res) => {
           this.getOptions();
           this.toastr.success(res.message, "Success");
@@ -80,7 +80,7 @@ export class DropdownComponent implements OnInit{
   }
 
   getOptions() {
-    this.userServices.getDropdownOptions().subscribe({
+    this.dropdownServices.getDropdownOptions().subscribe({
       next: (res) => {
         this.dropdownOptions = [];
         for (const obj of res) {
@@ -114,7 +114,7 @@ export class DropdownComponent implements OnInit{
     }
 
     const optionData = { id, option };
-    this.userServices.updateDropdownOption(optionData).subscribe({
+    this.dropdownServices.updateDropdownOption(optionData).subscribe({
       next: (res) => {
         const index = this.dropdownOptions.findIndex(item => item._id === id);
         if (index !== -1) {
@@ -133,7 +133,7 @@ export class DropdownComponent implements OnInit{
 
 
   deleteOption(_id: any) {
-    this.userServices.deleteDropdownOption(_id).subscribe({
+    this.dropdownServices.deleteDropdownOption(_id).subscribe({
       next: (res: any) => {
         const index = this.dropdownOptions.findIndex(item => item._id === _id);
         if (index !== -1) {
@@ -171,7 +171,7 @@ export class DropdownComponent implements OnInit{
 
   addOptionData(){
     const optionData = { optionId: this.selectedOptionId, optionData: this.optionDataValue}
-    this.userServices.addOptionData(optionData).subscribe({
+    this.dropdownServices.addOptionData(optionData).subscribe({
       next: (res) => {
         this.toastr.success(res.message, "Success");
         this.childDropdownValue = "Country";
@@ -186,7 +186,7 @@ export class DropdownComponent implements OnInit{
 
 
   getOptionData(){
-    this.userServices.getOptionData().subscribe({
+    this.dropdownServices.getOptionData().subscribe({
       next: (res) => {
         this.optionData = [];
         for (const obj of res) {

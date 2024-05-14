@@ -1,13 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities'; */
-
-
-
-/* based on angular-toastr css https://github.com/Foxandxss/angular-toastr/blob/cb508fe6801d6b288d3afc525bb40fee1b101650/dist/angular-toastr.css */
 
 /* position */
 .toast-center-center {
@@ -198,4 +191,4 @@
       padding: 15px 15px 15px 50px;
       width: 25em;
     }
-  }
+}
