@@ -13,7 +13,7 @@ const ContactRoutes = require("./routes/ContactRoutes")
 const UserApplication = require("./routes/UserApplyFormRoutes")
 const MultiFiles = require("./routes/MultiFilesRoutes")
 const Dropdown = require("./routes/DropdownOptionRoutes")
-const DropdownOptionData = require("./routes/DropdownOptionDataRoutes")
+const DropdownNestedOption = require("./routes/DropdownNestedOptionRoutes")
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -43,7 +43,7 @@ app.use('/contact', ContactRoutes);
 app.use('/application', UserApplication);
 app.use('/multi-files', MultiFiles);
 app.use('/dropdown', Dropdown)
-app.use('/dropdown-option-data', DropdownOptionData)
+app.use('/dropdown-nested-option', DropdownNestedOption)
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on ${process.env.PORT}`);

@@ -1,10 +1,10 @@
-const DropdownOptionData = require("../models/DropdownOptionData");
+const DropdownNestedOption = require("../models/DropdownNestedOption");
 const mongoose = require("mongoose");
 
 exports.addOptionData = async (req, res) => {
     let { optionId, optionData } = req.body;
     try {
-        const allOptionsData = await DropdownOptionData.find({ data: optionData });
+        const allOptionsData = await DropdownNestedOption.find({ data: optionData });
 
         if (allOptionsData.length > 0) {
             return res.status(400).json({
@@ -13,7 +13,7 @@ exports.addOptionData = async (req, res) => {
             });
         }
 
-        const newOptionData = new DropdownOptionData({
+        const newOptionData = new DropdownNestedOption({
             optionId: optionId,
             data: optionData,
         });
@@ -39,7 +39,7 @@ exports.getOptionAllData = async (req, res) => {
             return res.status(400).send({ message: 'Invalid optionId' });
         }
         
-        const optionAllData = await DropdownOptionData.find({optionId});
+        const optionAllData = await DropdownNestedOption.find({optionId});
         
         if (optionAllData.length <= 0) {
             return res.status(404).json({
@@ -66,7 +66,7 @@ exports.getOptionData = async (req, res) => {
             return res.status(400).send({ message: 'Invalid optionId' });
         }
         
-        const optionData = await DropdownOptionData.findById(_id);
+        const optionData = await DropdownNestedOption.findById(_id);
         
         if (optionData.length <= 0) {
             return res.status(404).json({
@@ -88,7 +88,7 @@ exports.getOptionData = async (req, res) => {
 
 exports.getAllOptionData = async (req, res) => {
     try {
-        const options = await DropdownOptionData.find();
+        const options = await DropdownNestedOption.find();
         res.status(200).json(options);
     } catch (error) {
         res.status(400).json({
@@ -102,7 +102,7 @@ exports.getAllOptionData = async (req, res) => {
 exports.updateOptionData = async (req, res) => {
     let { _id, optionData } = req.body;
     try {
-        const updatedOption = await DropdownOptionData.findByIdAndUpdate(
+        const updatedOption = await DropdownNestedOption.findByIdAndUpdate(
             { _id },
             { data: optionData },
             { new: true }
@@ -131,7 +131,7 @@ exports.updateOptionData = async (req, res) => {
 exports.deleteOptionData = async (req, res) => {
     const id = req.params.id
     try {
-        const deletedOption = await DropdownOptionData.findByIdAndDelete({ _id: id });
+        const deletedOption = await DropdownNestedOption.findByIdAndDelete({ _id: id });
 
         if (!deletedOption) {
             return res.status(404).json({
