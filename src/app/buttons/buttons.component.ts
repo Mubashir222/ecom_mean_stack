@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faHeart, faPen } from "@fortawesome/free-solid-svg-icons"
+import { heroHeart, heroPencil } from '@ng-icons/heroicons/outline';
 import { LoaderComponent } from 'src/components/loader/loader.component';
-
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
 
 @Component({
   selector: 'app-buttons',
   standalone: true,
-  imports: [FontAwesomeModule, LoaderComponent],
+  imports: [NgIconComponent, LoaderComponent],
   templateUrl: './buttons.component.html',
-  styleUrl: './buttons.component.css'
+  styleUrl: './buttons.component.css',
+  viewProviders: [provideIcons({ heroHeart, heroPencil })]
 })
 export class ButtonsComponent implements OnInit {
-  faHeart = faHeart;
-  faPen = faPen;
   isLoading = false;
 
   ngOnInit(): void {

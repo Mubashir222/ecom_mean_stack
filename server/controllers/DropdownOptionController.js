@@ -1,4 +1,5 @@
 const DropdownOption = require("../models/DropdownOption");
+const DropdownNestedOption = require("../models/DropdownNestedOption");
 
 exports.addOption = async (req, res) => {
     let { option } = req.body;
@@ -105,6 +106,10 @@ exports.deleteOption = async (req, res) => {
                 message: "Option not found!",
             });
         }
+
+        // Delete related rows in DropdownNestedOption
+        await DropdownNestedOption.deleteMany({ optionId: id });
+
         res.status(200).json({
             message: "Option deleted successfully!",
         });

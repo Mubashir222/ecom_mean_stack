@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { UserServices } from '../../app/services/user.services';
+import { UserServices } from '../services/user.services';
 
 @Component({
   selector: 'app-upload-img',

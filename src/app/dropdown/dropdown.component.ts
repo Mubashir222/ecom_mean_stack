@@ -3,27 +3,24 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownServices } from './dropdown.service';
-import { faPen, faTrash, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoaderComponent } from 'src/components/loader/loader.component';
-import { LoadingComponent } from 'src/components/loading/loading.component';
-
+import { heroTrash, heroPencil } from '@ng-icons/heroicons/outline';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {bootstrapXLg, bootstrapCheckLg} from "@ng-icons/bootstrap-icons"
 
 @Component({
   selector: 'app-dropdown',
   standalone: true,
-  // imports: [CommonModule, ReactiveFormsModule, FormsModule],
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, FontAwesomeModule, LoaderComponent, LoadingComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, LoaderComponent, NgIconComponent],
   templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.css'
+  styleUrl: './dropdown.component.css',
+  viewProviders: [provideIcons({ heroTrash, heroPencil, bootstrapCheckLg, bootstrapXLg })]
 })
+
 export class DropdownComponent implements OnInit{
-  penIcon = faPen;
-  trashIcon = faTrash;
-  checkIcon = faCheck;
-  xmarkIcon = faXmark;
-  isLoader = false;
-  loading = false;
+  isLoader: boolean = false;
+  optionLoading: boolean = false;
+  optionDataLoading: boolean = false;
 
   dropdownOpen = false;
   dropdownValue = "Country";
@@ -71,8 +68,7 @@ export class DropdownComponent implements OnInit{
 
 
   handleChangeOption(event: any) {
-    const target = event.target;
-    this.option = target.value;
+    this.option = event.target.value;
     this.isDisabled = false;
   }
 
@@ -80,6 +76,7 @@ export class DropdownComponent implements OnInit{
     if (this.option === "") {
       this.toastr.error("Please select an option", "Error");
     } else {
+      this.optionLoading = true;
       this.dropdownServices.addDropdownOption({ option: this.option }).subscribe({
         next: (res) => {
           this.getOptions();
@@ -91,6 +88,9 @@ export class DropdownComponent implements OnInit{
           this.toastr.error(err.error.message, "Error");
         }
       });
+      setInterval(() => {
+        this.optionLoading = false;
+      }, 1000);  
     }
   }
 
@@ -154,6 +154,8 @@ export class DropdownComponent implements OnInit{
         if (index !== -1) {
           this.dropdownOptions.splice(index, 1);
         }
+        this.childDropdownValue = this.dropdownOptions[0].option;
+        this.OptionSelected = this.dropdownOptions[0]._id;
         this.toastr.success(res.message);
       },
       error: (err) => {
@@ -185,6 +187,8 @@ export class DropdownComponent implements OnInit{
 }
 
   addOptionData(){
+    this.optionDataLoading = true;
+
     const optionData = { optionId: this.selectedOptionId, optionData: this.optionDataValue}
     this.dropdownServices.addOptionData(optionData).subscribe({
       next: (res) => {
@@ -193,16 +197,22 @@ export class DropdownComponent implements OnInit{
         this.childDropdownValue = "Country";
         this.optionDataValue = "";
         this.isEmptyDataInput = true;
+        setInterval(() => {
+          this.toggleOptionDataSelected(optionData.optionId)
+        }, 1000);
       },
       error: (err) => {
         this.toastr.error(err.error.message, "Error");
       }
     });
+    
+    setInterval(() => {
+      this.optionDataLoading = false;
+    }, 1000);
   }
 
 
   getOptionData(){
-    this.loading = true;
     this.dropdownServices.getOptionData().subscribe({
       next: (res) => {
         this.optionData = [];
@@ -214,9 +224,6 @@ export class DropdownComponent implements OnInit{
         console.log(err);
       }
     });
-    setInterval(() => {
-      this.loading = false;
-    }, 1000);
   }
 
   toggleOptionDataSelected(value: any){

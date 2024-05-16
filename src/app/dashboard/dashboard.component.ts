@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServices } from '../../app/services/user.services';
+import { UserServices } from '../services/user.services';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from 'src/components/loader/loader.component';
 
@@ -15,12 +15,12 @@ export class DashboardComponent implements OnInit {
   userDetails: any;
   isLoader = false;
 
-  constructor(private userService: UserServices) { }
+  constructor(private userService: UserServices) {}
 
   ngOnInit(): void {
-    this.isLoader = true;
     this.getUserDetails();
-    setInterval(() => {
+    this.isLoader = true;
+    setTimeout(() => {
       this.isLoader = false;
     }, 1000);
   }

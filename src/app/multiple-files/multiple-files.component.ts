@@ -1,26 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServices } from '../../app/services/user.services';
+import { UserServices } from '../services/user.services';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { faTrash, faDownload } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoaderComponent } from 'src/components/loader/loader.component';
-
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import {bootstrapTrash, bootstrapDownload} from "@ng-icons/bootstrap-icons"
 
 @Component({
   selector: 'app-multiple-files',
   standalone: true,
-  imports: [CommonModule, FontAwesomeModule, LoaderComponent],
+  imports: [CommonModule, NgIconComponent, LoaderComponent],
   templateUrl: './multiple-files.component.html',
-  styleUrls: ['./multiple-files.component.css']
+  styleUrls: ['./multiple-files.component.css'],
+  viewProviders: [provideIcons({bootstrapTrash, bootstrapDownload})]
 })
 
 export class MultipleFilesComponent implements OnInit {
   selectedFiles?: FileList;
   message: string[] = [];
   fileInfos: any[] = [];
-  faTrash = faTrash;
-  faDownload = faDownload;
   isLoading = false;
 
   constructor(private uploadService: UserServices, private toastr: ToastrService) { }

@@ -139,6 +139,7 @@ exports.deleteOptionData = async (req, res) => {
                 message: "Option not found!",
             });
         }
+
         res.status(200).json({
             message: "Option deleted successfully!",
         });

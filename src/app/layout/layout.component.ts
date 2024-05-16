@@ -1,30 +1,21 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../../app/auth.service';
-import {faHome, faRectangleList, faAddressCard, faMagnifyingGlass, faChartPie, faArrowPointer, faLayerGroup, faTable, faPager} from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { AuthService } from '../auth.service';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common'
+import { bootstrapSearch, bootstrapHouseDoorFill, bootstrapClipboardMinusFill, bootstrapCardHeading, bootstrapCursorFill, bootstrapLayersFill, bootstrapDropbox, bootstrapGrid1x2Fill } from "@ng-icons/bootstrap-icons";
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [FontAwesomeModule, RouterLink, RouterLinkActive, RouterOutlet, NgOptimizedImage],
-
+  imports: [NgIconComponent, RouterLink, RouterLinkActive, RouterOutlet, NgOptimizedImage],
+  viewProviders: [provideIcons({ bootstrapSearch, bootstrapHouseDoorFill, bootstrapClipboardMinusFill, bootstrapCardHeading, bootstrapCursorFill, bootstrapLayersFill, bootstrapDropbox, bootstrapGrid1x2Fill })],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent {
   currentUser: any;
   currentUrl: string;
-  faHome = faHome;
-  faRectangleList = faRectangleList;
-  faAddressCard = faAddressCard;
-  faChartPie = faChartPie;
-  faArrowPointer = faArrowPointer;
-  faLayerGroup = faLayerGroup;
-  faTable = faTable;
-  faPager = faPager;
-  faMagnifyingGlass = faMagnifyingGlass;
 
   constructor(private authService: AuthService, private router: Router) {
     this.currentUrl = this.router.url;

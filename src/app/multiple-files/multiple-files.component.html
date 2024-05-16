@@ -28,14 +28,14 @@
       }
       @else {
         @for (file of fileInfos.slice().reverse(); track file; let i = $index) {
-          <li class="list-group-item flex justify-between bg-white py-2 ps-5 border-2 border-x-indigo-600 rounded-lg mb-4">
+          <li class="list-group-item flex justify-between bg-white py-2 px-5 border-2 border-x-indigo-600 rounded-lg mb-4">
             <p>{{ file.file.split("files\\")[1] }}</p>
             <div>
-              <a *ngIf="fileReady(i)" href={{file.file}} download>
-                <fa-icon [icon]="faDownload" class="text-lg mr-5 text-blue-600"></fa-icon>  
+              <a *ngIf="fileReady(i)" href={{file.file}} download class="px-2 pt-1 pb-0.5 mx-1 bg-blue-600 rounded">
+                <ng-icon name="bootstrapDownload" class="text-white"></ng-icon>                                                             
               </a>
-              <button (click)="deleteFile(file)">
-                <fa-icon [icon]="faTrash" class="text-lg mr-5 text-red-600"></fa-icon>
+              <button (click)="deleteFile(file)" class="px-2 pt-1 mx-1 bg-red-700 rounded">
+                <ng-icon name="bootstrapTrash" class="text-white"></ng-icon>                                                            
               </button>
             </div>
           </li>
