@@ -5,15 +5,16 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 import { NgOptimizedImage } from '@angular/common'
 import { bootstrapSearch, bootstrapHouseDoorFill, bootstrapClipboardMinusFill, bootstrapCardHeading, bootstrapCursorFill, bootstrapLayersFill, bootstrapDropbox, bootstrapGrid1x2Fill } from "@ng-icons/bootstrap-icons";
 
+
 @Component({
-  selector: 'app-layout',
+  selector: 'app-nested-layout',
   standalone: true,
   imports: [NgIconComponent, RouterLink, RouterLinkActive, RouterOutlet, NgOptimizedImage],
   viewProviders: [provideIcons({ bootstrapSearch, bootstrapHouseDoorFill, bootstrapClipboardMinusFill, bootstrapCardHeading, bootstrapCursorFill, bootstrapLayersFill, bootstrapDropbox, bootstrapGrid1x2Fill })],
-  templateUrl: './layout.component.html',
-  styleUrl: './layout.component.css'
+  templateUrl: './nested-layout.component.html',
+  styleUrl: './nested-layout.component.css'
 })
-export class LayoutComponent {
+export class NestedLayoutComponent {
   currentUser: any;
   currentUrl: string;
 

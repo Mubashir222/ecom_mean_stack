@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServices } from '../services/user.services';
+import { UserServices } from '../../services/user.services';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from 'src/components/loader/loader.component';
 

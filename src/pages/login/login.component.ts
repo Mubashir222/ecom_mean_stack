@@ -1,14 +1,14 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { AuthService } from '../auth.service';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, HttpClientModule],
+  imports: [FormsModule, HttpClientModule, RouterLink, RouterLinkActive],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -26,7 +26,7 @@ export class LoginComponent {
         this.toastr.success(res.message);
         this.authService.setToken(res.token);
         this.authService.setUser(res.user);
-        this.router.navigateByUrl('/dashboard');
+        this.router.navigateByUrl('/pages/auth-user');
       }else {
         console.log(res.error);
       }

@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
-import { UserServices } from '../services/user.services';
+import { UserServices } from '../../services/user.services';
 import { UploadImgComponent } from '../upload-img/upload-img.component';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
