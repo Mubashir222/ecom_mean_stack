@@ -28,9 +28,6 @@ exports.GetUser = async (req, res) => {
 
 
 exports.GetAllUser = async (req, res) => {
-  if (!("authorization" in req.headers)) {
-		return res.status(401).json({ message: "No authorization token" });
-	}
   try {
     const users = await User.find();
 
@@ -81,6 +78,7 @@ exports.Signup = async (req, res) => {
 
     res.status(201).json({ message: 'User created successfully' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -115,7 +113,6 @@ exports.Login = async (req, res) => {
     
     res.json({ message: 'Login successful', token, user });
   } catch (error) {
-    console.log(error)
     res.status(500).json({ Error: 'Internal Server Error' });
   }
 };

@@ -1,36 +1,51 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { LoaderComponent } from 'src/components/loader/loader.component';
+import { LoadingComponent } from 'src/components/loading/loading.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, HttpClientModule, RouterLink, RouterLinkActive],
+  imports: [FormsModule, HttpClientModule, RouterLink, RouterLinkActive, LoaderComponent, LoadingComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
 
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   login: Login;
+  isLoading: boolean = false;
+  isLoginUser: boolean = false;
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService, private toastr: ToastrService) {
+  constructor(private router: Router, private authService: AuthService, private toastr: ToastrService) {
     this.login = new Login();
   }
 
+  ngOnInit(): void {
+    this.isLoading = true;
+    setInterval(() => {
+      this.isLoading = false;
+    }, 1000);
+  }
+
   onLogin() {
-    this.http.post('http://localhost:5000/api/login', this.login).subscribe((res:any) => {
-      if(res.message){
-        this.toastr.success(res.message);
-        this.authService.setToken(res.token);
-        this.authService.setUser(res.user);
+    this.isLoginUser = true;
+    this.authService.userLogin(this.login).subscribe({
+      next: (response) => {
+        this.login = new Login();
+        this.toastr.success(response.message);
         this.router.navigateByUrl('/pages/auth-user');
-      }else {
-        console.log(res.error);
+      }, error: (error) => {
+        this.toastr.error(error.error.message || 'An error occurred');
+        console.log(error);
       }
     });
+    setInterval(() => {
+      this.isLoginUser = false;
+    }, 1000);
   }
 }
 

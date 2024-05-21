@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownServices } from './dropdown.service';
 import { LoaderComponent } from 'src/components/loader/loader.component';
 import { heroTrash, heroPencil } from '@ng-icons/heroicons/outline';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {bootstrapXLg, bootstrapCheckLg} from "@ng-icons/bootstrap-icons"
+import { LoadingComponent } from 'src/components/loading/loading.component';
 
 @Component({
   selector: 'app-dropdown',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, LoaderComponent, NgIconComponent],
+  imports: [ReactiveFormsModule, FormsModule, LoaderComponent, NgIconComponent, LoadingComponent],
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.css',
   viewProviders: [provideIcons({ heroTrash, heroPencil, bootstrapCheckLg, bootstrapXLg })]
@@ -20,7 +20,6 @@ import {bootstrapXLg, bootstrapCheckLg} from "@ng-icons/bootstrap-icons"
 export class DropdownComponent implements OnInit{
   isLoader: boolean = false;
   optionLoading: boolean = false;
-  optionDataLoading: boolean = false;
 
   dropdownOpen = false;
   dropdownValue = "Country";
@@ -187,7 +186,7 @@ export class DropdownComponent implements OnInit{
 }
 
   addOptionData(){
-    this.optionDataLoading = true;
+    this.optionLoading = true;
 
     const optionData = { optionId: this.selectedOptionId, optionData: this.optionDataValue}
     this.dropdownServices.addOptionData(optionData).subscribe({
@@ -197,9 +196,6 @@ export class DropdownComponent implements OnInit{
         this.childDropdownValue = "Country";
         this.optionDataValue = "";
         this.isEmptyDataInput = true;
-        setInterval(() => {
-          this.toggleOptionDataSelected(optionData.optionId)
-        }, 1000);
       },
       error: (err) => {
         this.toastr.error(err.error.message, "Error");
@@ -207,7 +203,7 @@ export class DropdownComponent implements OnInit{
     });
     
     setInterval(() => {
-      this.optionDataLoading = false;
+      this.optionLoading = false;
     }, 1000);
   }
 

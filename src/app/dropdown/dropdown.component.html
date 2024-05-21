@@ -28,18 +28,20 @@
             </button>
     
             
-            <div *ngIf="dropdownOptions.length>0">
-                <div *ngIf="isChildDropdownOpen" class="absolute top-12 p-2 sm:w-[200px] w-auto bg-white border border-gray-300 rounded-lg shadow-lg">
-                    <button (click)="toggleChildDropdown(-1, 'Country')" [class.bg-indigo-600]="childDropdownValue === 'Country'" [class.text-white]="childDropdownValue === 'Country'" [class.transparent]="childDropdownValue !== 'Country'" value='Country' class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">
-                        Country
-                    </button>
-                    @for (item of dropdownOptions; track $index) {
-                        <button (click)="toggleChildDropdown(item._id, item.option)" [class.bg-indigo-600]="childDropdownValue === item.option" [class.text-white]="childDropdownValue === item.option" [class.transparent]="childDropdownValue !== item.option" value={{item.option}} class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">
-                            {{ item.option }}
+            @if(dropdownOptions.length>0){
+                @if(isChildDropdownOpen){
+                    <div class="absolute top-12 p-2 sm:w-[200px] w-auto bg-white border border-gray-300 rounded-lg shadow-lg">
+                        <button (click)="toggleChildDropdown(-1, 'Country')" [class.bg-indigo-600]="childDropdownValue === 'Country'" [class.text-white]="childDropdownValue === 'Country'" [class.transparent]="childDropdownValue !== 'Country'" value='Country' class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">
+                            Country
                         </button>
-                    }
-                </div>
-            </div>
+                        @for (item of dropdownOptions; track $index) {
+                            <button (click)="toggleChildDropdown(item._id, item.option)" [class.bg-indigo-600]="childDropdownValue === item.option" [class.text-white]="childDropdownValue === item.option" [class.transparent]="childDropdownValue !== item.option" value={{item.option}} class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">
+                                {{ item.option }}
+                            </button>
+                        }
+                    </div>
+                }
+            }
         </div>
             
         <button (click)="addOptionData()" [disabled]="isButtonDisabled()" [class.cursor-not-allowed]="isButtonDisabled()" [class.cursor.pointer]="isButtonDisabled()" class="col-span-2 bg-indigo-600 px-5 py-2 rounded-lg text-white">
@@ -50,34 +52,21 @@
     
     <div class="my-20">
 
-        <div class="grid grid-cols-12 my-10 gap-5">
-            
-            <div class="col-span-4">
-                <ng-container *ngIf="optionLoading===true">
-                    @for (item of dropdownOptions; track item) {
-                        <div>
-                            <button class="text-center text-gray-200 mb-2 py-1 px-2 rounded-lg border-2 border-gray-200 transition-all delay-200 duration-200 ease-in-out">
-                                Options...
-                            </button>
-                            <button class="bg-gray-200 px-2 py-1 mx-1 rounded-md text-gray-100">
-                                <ng-icon name="heroPencil"></ng-icon>
-                            </button>
-                            <button class="bg-gray-200 px-2 py-1 mx-1 rounded-md text-gray-100">
-                                <ng-icon name="heroTrash"></ng-icon>
-                            </button>                
-                        </div>
-                    }
-                </ng-container>
+        @if(optionLoading===true){
+            <app-loading></app-loading>
+        }@else {
+            <div class="grid grid-cols-12 my-10 gap-5">
                 
-                <ng-container *ngIf="optionLoading===false">
-                    <div *ngIf="dropdownOptions.length === 0">
+                <div class="col-span-4">
+    
+                    @if(dropdownOptions.length === 0){
                         <p class="text-center text-gray-600 mb-2 py-1 px-2 rounded-lg border-2 border-gray-300">
                             There is no dropdown option!
                         </p>
-                    </div>
+                    }
                     
-                    <div *ngFor="let item of dropdownOptions; let i = index">
-                        <ng-container *ngIf="isEdit !== i">
+                    @for (item of dropdownOptions; track item; let i = $index) {
+                        @if(isEdit !== i){
                             <div class="grid grid-cols-2 gap-5 mb-2">
                                 <button (click)="toggleOptionDataSelected(item._id)" [class.bg-indigo-600]="OptionSelected===item._id" [class.text-white]="OptionSelected===item._id" class="text-center text-gray-600 mb-2 py-1 px-2 rounded-lg border-2 border-indigo-600 transition-all delay-200 duration-200 ease-in-out">
                                     {{item.option}}
@@ -93,8 +82,8 @@
                                 </div>
                     
                             </div>
-                        </ng-container>
-                        <ng-container *ngIf="isEdit === i">
+                        }
+                        @else if(isEdit === i){
                             <div class="grid grid-cols-2 gap-5 mb-2">
                 
                                 <input type="text" name={{item.option}} [(ngModel)]="item.option" [class.border-green-600]="isEdit===i" class="px-2 py-1 mb-2 text-center bg-gray-50 border-2 border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Edit option..." />
@@ -108,36 +97,13 @@
                                     </button>
                                 </div>
                             </div>
-                        </ng-container>
-                    </div>
-                </ng-container>
-                
-            </div>
-
-            <div class="col-span-8">
-
-                @if(optionDataLoading){
-                    <ul class="p-3 list-decimal list-inside animate-pulse">
-                        @for (item of dropdownOptions; track item) {
-                            <li class="flex justify-between font-semibold border-b-2 border-gray-200 rounded-md p-2">
-                                <div class="flex justify-between w-full">
-                                    <p class="text-lg text-center text-gray-200">
-                                        Loading...
-                                    </p>
-                                    <div>
-                                        <button class="bg-gray-200 px-2 py-1 mx-1 rounded-md text-white">
-                                            <ng-icon name="heroPencil"></ng-icon>
-                                        </button>
-                                        <button class="bg-gray-200 px-2 py-1 mx-1 rounded-md text-white">
-                                            <ng-icon name="heroTrash"></ng-icon>
-                                        </button>
-                                    </div>                        
-                                </div>
-                            </li>
                         }
-                    </ul>
-                }@else {
-
+                    }
+                    
+                </div>
+    
+                <div class="col-span-8">
+    
                     @if (OptionSelected === "" || OptionSelected === null || OptionSelected === undefined) {
                         <div class="flex justify-center text-indigo-600 font-semibold">
                             Select an option to see the data!
@@ -152,7 +118,7 @@
                                     @for (option of optionData; track option; let  i = $index) {    
                                         @if(option.optionId === OptionSelected){
                                         <li class="flex justify-between font-semibold border-b-2 border-gray-300 rounded-md p-2">
-                                            <ng-container *ngIf="isEditNestedOption !== i || isEditNestedOption === null">
+                                            @if(isEditNestedOption !== i || isEditNestedOption === null){
                                                 <div class="flex justify-between w-full">
                                                     <p [class.border-green-600]="isEditNestedOption === i" class="text-lg text-center text-gray-600">
                                                         {{ option.data }}
@@ -167,8 +133,8 @@
                                                     </div>
                                         
                                                 </div>
-                                            </ng-container>
-                                            <ng-container *ngIf="isEditNestedOption === i">
+                                            }
+                                            @if(isEditNestedOption === i){
                                                 <div class="flex justify-between w-full px-1">
                                     
                                                     <input type="text" name={{option.data}} [(ngModel)]="option.data" [class.border-green-600]="isEditNestedOption===i" class="px-2 py-1 text-center bg-gray-50 border-2 border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500" placeholder="Edit option..." />
@@ -182,18 +148,18 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                            </ng-container>
+                                            }
                                         </li>
                                     }
                                 }
                             </ul>
                         }
                     }
-                }
-
+    
+                </div>
+                
             </div>
-            
-        </div>
+        }
 
     </div>
 </div>

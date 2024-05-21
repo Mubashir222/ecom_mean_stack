@@ -40,4 +40,9 @@ export class UserServices {
     return this.httpClient.delete<any>(this.apiUrl + `multi-files/delete-file/${file}`);
   }
 
+  downloadFiles(id: string) {
+    return this.httpClient.get(`${this.apiUrl}multi-files/download/${id}`, {
+      responseType: 'blob'
+    });
+  }
 }

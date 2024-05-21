@@ -18,15 +18,11 @@ export class NestedLayoutComponent {
   currentUser: any;
   currentUrl: string;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private router: Router) {
     this.currentUrl = this.router.url;
     this.router.events.subscribe(() => {
       this.currentUrl = this.router.url;
     });
   }
 
-
-  ngOnInit() {
-    this.currentUser = this.authService.getUser();
-  }
 }

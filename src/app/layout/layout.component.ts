@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common'
 import { bootstrapSearch, bootstrapHouseDoorFill, bootstrapClipboardMinusFill, bootstrapCardHeading, bootstrapCursorFill, bootstrapLayersFill, bootstrapDropbox, bootstrapGrid1x2Fill } from "@ng-icons/bootstrap-icons";
+import { filter } from 'rxjs/operators';
+import { NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-layout',
@@ -13,19 +14,23 @@ import { bootstrapSearch, bootstrapHouseDoorFill, bootstrapClipboardMinusFill, b
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
   currentUser: any;
-  currentUrl: string;
+  currentUrl: string = "";
+  isPagesLinkActive: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {
-    this.currentUrl = this.router.url;
-    this.router.events.subscribe(() => {
-      this.currentUrl = this.router.url;
-    });
-  }
-
+  constructor(private router: Router) {}
 
   ngOnInit() {
-    this.currentUser = this.authService.getUser();
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      if(this.router.url.includes('pages')) {
+        this.isPagesLinkActive = true;
+      } else {
+        this.isPagesLinkActive = false;
+      }
+      });
   }
+
 }

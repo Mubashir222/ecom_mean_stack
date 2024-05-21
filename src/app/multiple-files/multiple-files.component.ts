@@ -44,10 +44,6 @@ export class MultipleFilesComponent implements OnInit {
       this.selectedFiles = undefined;
     }
   }
-
-  fileReady(index: number): boolean {
-    return this.fileInfos && index >= 0 && index < this.fileInfos.length;
-  }
   
 
   upload(file: File): void {
@@ -71,7 +67,7 @@ export class MultipleFilesComponent implements OnInit {
     });
     setTimeout(() => {
       this.isLoading = false;
-    }, 5000);
+    }, 1000);
     }
   }
 
@@ -104,5 +100,40 @@ export class MultipleFilesComponent implements OnInit {
       this.isLoading = false;
     }, 2000);
   }
+
+  downloadFiles(id: any, file: any): void {
+    const fileType = file.split(".")[1];
+    const filename = file.split("files\\")[1];
+    this.uploadService.downloadFiles(id).subscribe({
+      next: (response) => {
+        const blob = new Blob([response], { type: fileType });
+        const downloadUrl = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(downloadUrl);
+        this.toastr.success("Downloading file...");
+      },
+      error: (error) => {
+        console.error('Error downloading file:', error);
+        this.toastr.error("Failed to download file!");
+      }
+    });
+  }
   
+  
+  // downloadFiles(file: any): void {
+  //   console.log(file)
+  //   this.uploadService.downloadFiles(file).subscribe({
+  //     next: (response) => {
+  //       this.toastr.success("Downloading file...");
+  //     },
+  //     error: (error) => {
+  //       console.error('Error downloading file:', error);
+  //       this.toastr.error("Failed to download file!");
+  //     }
+  //   });
+  // }
+
 }

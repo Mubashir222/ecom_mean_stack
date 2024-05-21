@@ -5,8 +5,6 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  private tokenKey = 'auth_token';
-  private userKey = 'auth_user';
   apiUrl = "http://localhost:5000/";
 
   constructor(private httpClient: HttpClient) {}
@@ -16,46 +14,28 @@ export class AuthService {
   }
 
   userSignup(data: any) {
+    console.log(data)
     return this.httpClient.post<any>(this.apiUrl + 'api/signup', data);
   }
 
   forgotPassword(data: any) {
-    return this.httpClient.post<any>(this.apiUrl + 'api/forgot-password', data);
+    return this.httpClient.post<any>(this.apiUrl + 'user/forgot-password-request', data);
   }
 
-
-  setToken(token: string): void {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(this.tokenKey, token);
-    }
+  resetPassword(data: any) {
+    return this.httpClient.put<any>(this.apiUrl + 'user/reset-forgot-password', data);
   }
 
-  getToken(): string | null {
-    if (typeof localStorage !== 'undefined') {
-      return localStorage.getItem(this.tokenKey);
-    }
-    return null;
+  getUsers(){
+    return this.httpClient.get<any>(this.apiUrl + 'api/getAllUser');
+  }
+ 
+  storeContact(data: any) {
+    return this.httpClient.post<any>(this.apiUrl + 'contact/insertContact', data);
   }
 
-  setUser(user: any): void {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.setItem(this.userKey, JSON.stringify(user));
-    }
-  }
-
-  getUser(): any | null {
-    if (typeof localStorage !== 'undefined') {
-      const userString = localStorage.getItem(this.userKey);
-      return userString ? JSON.parse(userString) : null;
-    }
-    return null;
-  }
-
-  logout(): void {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem(this.tokenKey);
-      localStorage.removeItem(this.userKey);
-    }
+  getContactData(){
+    return this.httpClient.get<any>(this.apiUrl + 'contact/getContact');
   }
 
 }

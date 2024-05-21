@@ -36,3 +36,16 @@ exports.insertContactMessage = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
+
+
+exports.getContactMessage = async (req, res) => {
+  try {
+    const messages = await Contact.find();
+
+    res.status(200).json(messages);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}

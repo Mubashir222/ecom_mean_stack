@@ -51,6 +51,32 @@ exports.uploadmultiFiles = async(req, res) => {
 }
 
 
+exports.downloadFiles = async(req, res) => {
+  const id = req.params.id;
+  
+  const file = await MultiFiles.findById({ _id: id });
+
+  if (!file) {
+    return res.status(404).json({ message: 'File not found' });
+  }
+
+  const fileName = file.file.split("files\\")[1];
+  
+  const filePath = path.join(__dirname, `../../src/assets/files/${fileName}`);
+  
+  try {
+    res.download(filePath, (err) => {
+      if (err) {
+        console.error('Error downloading the file:', err);
+        return res.status(500).send('File not found.');
+      }
+    });
+  } catch (err) {
+    console.error('Unexpected error:', err);
+    res.status(500).send('An unexpected error occurred.');
+  }
+};
+
 exports.getFiles = async(req, res) => {
     try {
         const files = await MultiFiles.find();
