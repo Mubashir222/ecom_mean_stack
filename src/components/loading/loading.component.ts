@@ -11,6 +11,6 @@ export class LoadingComponent {
   @Input() containerHeight: string;
 
   constructor() {
-    this.containerHeight = "50vh";
+    this.containerHeight = "80vh";
   }
 }

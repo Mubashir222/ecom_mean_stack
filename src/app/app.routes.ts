@@ -13,14 +13,33 @@ import { SignupComponent } from 'src/pages/signup/signup.component';
 import { ForgotPasswordComponent } from 'src/pages/forgot-password/forgot-password.component';
 import { ContactComponent } from 'src/pages/contact/contact.component';
 import { UserDataComponent } from 'src/pages/user-data/user-data.component';
+import { authGuard } from './auth.guard';
+import { ProfileComponent } from 'src/pages/profile/profile.component';
+import { loginGuard } from './login.guard';
+import { NotFoundComponent } from 'src/components/not-found/not-found.component';
 
 export const routes: Routes = [
     {
-        path: '', redirectTo: 'dashboard', pathMatch: 'full'
+        path: '', redirectTo: 'login', pathMatch: 'full'
+    },
+    {
+        path: 'login',
+        component: LoginComponent,
+        canActivate: [loginGuard]
+    },
+    {
+        path: 'signup',
+        component: SignupComponent,
+        canActivate: [loginGuard]
+    },
+    {
+        path: 'forgot-password',
+        component: ForgotPasswordComponent,
     },
     {
         path: '',
         component: LayoutComponent,
+        canActivate: [authGuard],
         children: [
             {
                 path: 'dashboard',
@@ -51,16 +70,8 @@ export const routes: Routes = [
                 component: NestedLayoutComponent,
                 children: [
                     {
-                        path: 'login',
-                        component: LoginComponent
-                    },
-                    {
-                        path: 'signup',
-                        component: SignupComponent
-                    },
-                    {
-                        path: 'forgot-password',
-                        component: ForgotPasswordComponent
+                        path: 'profile',
+                        component: ProfileComponent
                     },
                     {
                         path: 'auth-user',
@@ -74,7 +85,7 @@ export const routes: Routes = [
             },
             {
                 path: '**',
-                redirectTo: 'dashboard'
+                component: NotFoundComponent,
             }
         ]
     }

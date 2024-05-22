@@ -8,9 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './loader.component.css'
 })
 export class LoaderComponent {
-  @Input() loaderDivHeight: string;
-
-  constructor() {
-    this.loaderDivHeight = "80vh";
-  }
+  constructor() {}
 }

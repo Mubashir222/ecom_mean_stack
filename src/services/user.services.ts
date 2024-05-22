@@ -45,4 +45,16 @@ export class UserServices {
       responseType: 'blob'
     });
   }
+
+  storeContact(data: any) {
+    return this.httpClient.post<any>(this.apiUrl + 'contact/insertContact', data);
+  }
+
+  getContactData(){
+    return this.httpClient.get<any>(this.apiUrl + 'contact/getContact');
+  }
+
+  deleteFormUser(id: string) {
+    return this.httpClient.delete<any>(this.apiUrl + `application/delete-form-user/${id}`);
+  }
 }

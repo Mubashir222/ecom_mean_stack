@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { LoaderComponent } from 'src/components/loader/loader.component';
 import { LoadingComponent } from 'src/components/loading/loading.component';
 import { AuthService } from 'src/services/auth.service';
+import { UserServices } from 'src/services/user.services';
 
 @Component({
   selector: 'app-user-data',
   standalone: true,
-  imports: [LoaderComponent, LoadingComponent],
+  imports: [LoadingComponent],
   templateUrl: './user-data.component.html',
   styleUrl: './user-data.component.css'
 })
@@ -17,7 +17,7 @@ export class UserDataComponent implements OnInit{
   isLoading: boolean = false;
   isSwap: boolean = false;
 
-  constructor(private authServices: AuthService, private toastr: ToastrService) {}
+  constructor(private userServices: UserServices, private authServices: AuthService, private toastr: ToastrService) {}
 
   ngOnInit() {
     this.isLoading = true;
@@ -25,7 +25,7 @@ export class UserDataComponent implements OnInit{
     this.getContactData();
     setInterval(() => {
       this.isLoading = false;
-    }, 2000);
+    }, 1500);
   }
 
   getUsersData(){
@@ -39,7 +39,7 @@ export class UserDataComponent implements OnInit{
   }
   
   getContactData(){
-    this.authServices.getContactData().subscribe({
+    this.userServices.getContactData().subscribe({
       next: (response) => {
         this.contactData = response;      
       },error: (error) => {

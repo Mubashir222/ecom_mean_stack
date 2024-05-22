@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { heroHeart, heroPencil } from '@ng-icons/heroicons/outline';
 import { LoaderComponent } from 'src/components/loader/loader.component';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -11,15 +11,6 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
   styleUrl: './buttons.component.css',
   viewProviders: [provideIcons({ heroHeart, heroPencil })]
 })
-export class ButtonsComponent implements OnInit {
-  isLoading = false;
-
-  ngOnInit(): void {
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
-  }
-
+export class ButtonsComponent {
   constructor() {}
 }

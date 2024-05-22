@@ -30,12 +30,7 @@ export class FormsComponent implements OnInit{
   dropdownValue = "Religion";
   isLoading = false;
 
-  ngOnInit(): void {
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
-  }
+  ngOnInit(): void {}
 
   updateButtonValue(value: any): void {
     this.dropdownValue = value;

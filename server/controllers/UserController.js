@@ -76,7 +76,7 @@ exports.Signup = async (req, res) => {
 
     await newUser.save();
 
-    res.status(201).json({ message: 'User created successfully' });
+    res.status(201).json({ message: 'User register successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -141,15 +141,16 @@ exports.userUpdate = async (req, res) => {
   if (!("authorization" in req.headers)) {
     return res.status(401).json({ message: "No authorization token" });
   }
-  const token = req.headers.authorization;
-
-  const {userData} = req.body;
   try {
+    const token = req.headers.authorization;
+    const {userData} = req.body;
+
     if (!userData) {
       return res.status(400).json({ error: "No Data is updated" });
     }
+    const orgToken = token.split(" ")[1];
 
-    const tokenData = VerifyToken(token);
+    const tokenData = VerifyToken(orgToken);
 
     if (!tokenData) {
       return res.status(401).json({ error: "Invalid Token" });
@@ -157,10 +158,14 @@ exports.userUpdate = async (req, res) => {
 
     const {userId, myEmail} = tokenData;
 
-    const { username, profileImg, email, description } = userData;
+    const { username, profileImg, email, description, phoneNo, religion } = userData;
 
-    if (!username || !email || !profileImg || !description) {
-      return res.status(400).json({ error: "Some data is missing!" });
+    if (!username || !email || !profileImg || !description || !phoneNo) {
+      return res.status(400).json({ message: "Due to empty fields, data is missing!" });
+    }
+
+    if (!isEmail(email)) {
+      return res.status(400).json({ error: 'Email is Invalid' });
     }
 
     if (email != myEmail) {
@@ -171,10 +176,6 @@ exports.userUpdate = async (req, res) => {
       }
     }
 
-    if (!isEmail(email)) {
-      return res.status(400).json({ error: 'Email is Invalid' });
-    }
-
     await User.updateOne(
         { _id: userId },
         {
@@ -182,13 +183,24 @@ exports.userUpdate = async (req, res) => {
             email: email,
             profileImg: profileImg,
             description: description,
+            phoneNo: phoneNo,
+            religion: religion,
             updatedAt: Date.now(),  
         }
     );
 
-     res.status(201).json({
-       message: "User Updated Successfully!",
-     });
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      res.status(201).json({
+        message: "User Updated Successfully!",
+      });
+    }
+
+    res.status(201).json({
+      user: user,
+      message: "User Updated Successfully!",
+    });
    } catch (error) {
      console.error('Error uploading image:', error);
      res.status(500).json({

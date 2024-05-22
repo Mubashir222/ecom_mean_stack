@@ -4,6 +4,7 @@ const ForgotPasswordOtp = require("../models/ForgotPassword");
 const { ChangePasswordEmail } = require("../common/ForgotPasswordEmail");
 const bcrypt = require("bcrypt");
 const {GenerateOTP} = require("../common/GenerateOtp"); 
+const { VerifyToken } = require("../common/GenerateDecodeToken");
 
 exports.userForgotPasswordEmailSend = async (req, res) => {
     let { email } = req.body;
@@ -125,17 +126,28 @@ exports.userChangePassword = async (req, res) => {
     if (!("authorization" in req.headers)) {
 		return res.status(401).json({ message: "No authorization token" });
 	}
-    let { userData, email } = req.body;
-
     try {
+        const { userData } = req.body;
+        const token = req.headers.authorization;
+
+        const orgToken = token.split(" ")[1];
+
+        const tokenData = VerifyToken(orgToken);
+
+        if (!tokenData) {
+        return res.status(401).json({ error: "Invalid Token" });
+        }
+
+        const {userId, myEmail} = tokenData;
+        
         const { oldPassword, newPassword, confirmPassword } = userData;
 
         if (newPassword !== confirmPassword) {
             return res.status(422).json({ message: "Password and confirm password do not match" });
         }
 
-        const myUser = await User.findOne({ email });
-
+        const myUser = await User.findOne({ email: myEmail });
+        
         if (!myUser) {
             return res.status(422).json({ message: "Email is incorrect" });
         }

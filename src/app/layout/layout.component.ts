@@ -5,11 +5,13 @@ import { NgOptimizedImage } from '@angular/common'
 import { bootstrapSearch, bootstrapHouseDoorFill, bootstrapClipboardMinusFill, bootstrapCardHeading, bootstrapCursorFill, bootstrapLayersFill, bootstrapDropbox, bootstrapGrid1x2Fill } from "@ng-icons/bootstrap-icons";
 import { filter } from 'rxjs/operators';
 import { NavigationEnd } from '@angular/router';
+import { ProfileMenuComponent } from 'src/components/profile-menu/profile-menu.component';
+import { AuthService } from 'src/services/auth.service';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [NgIconComponent, RouterLink, RouterLinkActive, RouterOutlet, NgOptimizedImage],
+  imports: [NgIconComponent, RouterLink, RouterLinkActive, RouterOutlet, NgOptimizedImage, ProfileMenuComponent],
   viewProviders: [provideIcons({ bootstrapSearch, bootstrapHouseDoorFill, bootstrapClipboardMinusFill, bootstrapCardHeading, bootstrapCursorFill, bootstrapLayersFill, bootstrapDropbox, bootstrapGrid1x2Fill })],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
@@ -18,19 +20,38 @@ export class LayoutComponent implements OnInit {
   currentUser: any;
   currentUrl: string = "";
   isPagesLinkActive: boolean = false;
+  isActiveInput: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authServices: AuthService) {
+    if(this.router.url.includes('pages')) {
+      this.isPagesLinkActive = true;
+    } else {
+      this.isPagesLinkActive = false;
+    }
+  }
 
   ngOnInit() {
+    this.getUser();
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
+      console.log(this.router.url, this.router.url.includes('pages'))
       if(this.router.url.includes('pages')) {
         this.isPagesLinkActive = true;
       } else {
         this.isPagesLinkActive = false;
       }
-      });
+    });
+  }
+
+  getUser() {
+    const {token, user} = this.authServices.getLocalData() as { token: string | null; user: any; };
+    if(token && user){
+      this.currentUser = user;
+    }else if(!token || !user){
+      this.authServices.logout();
+    }
+    console.log(this.currentUser)
   }
 
 }

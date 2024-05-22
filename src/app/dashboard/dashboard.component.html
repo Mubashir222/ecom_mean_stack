@@ -1,42 +1,54 @@
 @if(isLoader){
-    <app-loader loaderDivHeight="80vh"></app-loader>
+    <app-loading [containerHeight]="'80vh'"></app-loading>
 }@else {
-    @if(userDetails == null || userDetails==undefined){
+    @if(userDetails.length <= 0){
         <div class="flex items-center justify-center h-[80vh]">
             <h1 class="text-2xl text-gray-400 font-semibold">No user found</h1>
         </div>
     }@else {
+        @if(userDetails){
+            <div class="relative overflow-x-auto dark:bg-gray-700">
+                @for(user of userDetails;track user; let i = $index){
+                    <div class="grid grid-cols-12 p-5 gap-5 mb-4 border-2 shadow-md sm:rounded-lg">
+                        <div class="col-span-8">
+                            <h1 class="text-2xl text-indigo-600 font-bold">{{user.firstname + " " + user.lastname}}</h1>
+                            <h3 class="text-sm mb-12 text-gray-400 font-semibold">{{user.email}}</h3>
+                            @if(user.religion){
+                                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Religion:</span> {{user.religion}}</p>
+                            }
+                            @if(user.phoneNo){
+                                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Phone No:</span> {{user.phoneNo}}</p>
+                            }
+                            @if(user.gender){
+                                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Gender:</span> {{user.gender}}</p>
+                            }
+                            @if(user.websiteUrl){
+                                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Website Url:</span> {{user.websiteUrl}}</p>
+                            }
+                            @if(user.company){
+                                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Company:</span> {{user.company}}</p>
+                            }
+                            @if(user.createdAt){
+                                <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Created at:</span> {{user.createdAt.split("T")[0]}}</p>
+                            }
+    
+                        </div>
+                        <div class="col-span-4 p-4">
+                            <img src={{user.profileImg}} class=" rounded-lg" alt="">
+                        </div>
 
-        <div *ngIf="userDetails" class="relative overflow-x-auto dark:bg-gray-700">
-            <ng-container *ngFor="let user of userDetails; let i = index ">
-                <div class="grid grid-cols-12 p-5 gap-5 mb-4 border-2 shadow-md sm:rounded-lg">
-                    <div class="col-span-8">
-                        <h1 class="text-2xl text-indigo-600 font-bold">{{user.firstname + " " + user.lastname}}</h1>
-                        <h3 class="text-sm mb-12 text-gray-400 font-semibold">{{user.email}}</h3>
-                        @if(user.religion){
-                            <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Religion:</span> {{user.religion}}</p>
-                        }
-                        @if(user.phoneNo){
-                            <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Phone No:</span> {{user.phoneNo}}</p>
-                        }
-                        @if(user.gender){
-                            <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Gender:</span> {{user.gender}}</p>
-                        }
-                        @if(user.websiteUrl){
-                            <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Website Url:</span> {{user.websiteUrl}}</p>
-                        }
-                        @if(user.company){
-                            <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Company:</span> {{user.company}}</p>
-                        }
-                        @if(user.createdAt){
-                            <p class="my-1 text-gray-600"><span class="font-semibold text-gray-700">Created at:</span> {{user.createdAt.split("T")[0]}}</p>
-                        }
+                        <div class="col-span-12 flex justify-center">
+                            <button class="px-2 pt-2 pb-1 bg-blue-600 text-white mx-2 rounded-md border-[1.5px] border-blue-600 hover:bg-transparent hover:text-blue-600 transition-all ease-in-out delay-150 duration-200">
+                                <ng-icon name="bootstrapPencilFill" class="text-xl"></ng-icon>
+                            </button>
+                            <button (click)="deleteFormUser(user._id)" [disabled]="isBtnClicked" [class.cursor-not-allowed]="isBtnClicked" [class.cursor-pointer]="isBtnClicked" class="px-2 pt-2 pb-1 bg-red-600 text-white mx-2 rounded-md border-[1.5px] border-red-600 hover:bg-transparent hover:text-red-600 transition-all ease-in-out delay-150 duration-200">
+                                <ng-icon name="bootstrapTrashFill" class="text-xl"></ng-icon>
+                            </button>
+                        </div>
+
                     </div>
-                    <div class="col-span-4 p-4">
-                        <img src={{user.profileImg}} class=" rounded-lg" alt="">
-                    </div>
-                </div>
-            </ng-container>
-       </div>
+                }
+           </div>
+        }
     }
 }

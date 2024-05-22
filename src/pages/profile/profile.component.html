@@ -1,0 +1,146 @@
+<section class="py-10">
+    <h2 class="text-indigo-600 text-3xl font-bold text-center">Profile</h2>
+    <p class="text-gray-500 my-2 text-center">Profile page content goes here</p>
+    <div class="lg:grid lg:grid-cols-12 gap-5 my-10">
+
+        <div class="lg:col-span-7 px-5 md:py-10 py-5 bg-white border-2 border-gray-200 rounded-lg shadow-lg">
+            
+            <div class="sm:flex sm:justify-between">
+
+                <div class="sm:w-40 w-full">
+                    <div class="pt-5 pb-6">
+                        @if(showImg){
+                            <img [src]="getProfileImgUrl()" class="w-full lg:h-32 sm:h-40 rounded-lg" alt="">
+                        } @else {
+                            @if(userData.value.profileImg==""){
+                                <img class="w-full lg:h-32 sm:h-40 h-60 rounded-lg" src="/assets/images/8380015.jpg" alt="">
+                            }@else {
+                                <img class="w-full lg:h-32 sm:h-40 h-60 rounded-lg" [src]="userData.value.profileImg" alt="">
+                            }
+                        }
+                    </div>
+                </div> 
+            
+                <div class="w-full p-4">
+                    <div class="flex items-center justify-center w-full">
+                        <label for="dropzone-file" class="flex flex-col items-center justify-center w-full lg:h-32 h-40 text-center border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                                <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG (MAX. 2MB)</p>
+                            </div>
+                            <input id="dropzone-file" type="file" class="hidden" (change)="onFileChange($event)" accept="image/png, image/jpg, image/jpeg" />
+                        </label>
+                    </div> 
+                </div>
+
+            </div>
+
+            <form (ngSubmit)="updateProfile()" [formGroup]="userData" class="space-y-8">
+                <div>
+                    <label for="username" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Name</label>
+                    <input type="text" id="username" formControlName="username" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="Example" required>
+                </div>
+                <div>
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Email</label>
+                    <input type="email" id="email" formControlName="email" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="name@example.com" required>
+                </div>
+                <div class="col-span-6">
+                    <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone No</label>
+                    <input type="text" id="phone" formControlName="phoneNo"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="03XX XXXXXXX" pattern="03-[0-9]{9}" required />
+                </div>
+
+                <div>
+                    <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Detail</label>
+                    <textarea rows="5" id="description" formControlName="description" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" placeholder="Enter your personal detail" required></textarea>
+                </div>
+
+                <div class="lg:flex lg:justify-between">
+    
+                    <div class="flex items-start mb-6 pt-1">
+                        <div class="flex items-center mr-5">
+                            <input id="male" checked type="radio" formControlName="gender" value="Male" name="gender" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300">
+                            <label for="male" class="ms-2 text-sm font-medium text-gray-900">Male</label>
+                        </div>
+                        <div class="flex items-center mr-5">
+                            <input id="female" type="radio" value="Female" formControlName="gender" name="gender" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300">
+                            <label for="female" class="ms-2 text-sm font-medium text-gray-900">Female</label>
+                        </div>
+                        <div class="flex items-center mr-5">
+                            <input id="others" type="radio" value="Others" formControlName="gender" name="gender" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300">
+                            <label for="others" class="ms-2 text-sm font-medium text-gray-900">Others</label>
+                        </div>        
+                    </div>
+                
+                
+                    <div class="relative">
+                        <button (click)="toggleDropdown($event)" class="block text-indigo-600 border-2 border-indigo-600 font-medium rounded-lg text-sm lg:w-[200px] w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            {{ dropdownValue }}
+                        </button>
+                        @if(dropdownOpen){
+                            <div class="absolute top-12 p-2 lg:w-[200px] w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+                                <button (click)="updateButtonValue('Select Religion')" [class.bg-indigo-600]="dropdownValue === 'Select Religion'" [class.text-white]="dropdownValue === 'Select Religion'" [class.transparent]="dropdownValue !== 'Select Religion'" value="Select Religion" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Select Religion</button>
+                                <button (click)="updateButtonValue('Islam')" [class.bg-indigo-600]="dropdownValue === 'Islam'" [class.text-white]="dropdownValue === 'Islam'" [class.transparent]="dropdownValue !== 'Islam'" value="Islam" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Islam</button>
+                                <button (click)="updateButtonValue('Christian')" [class.bg-indigo-600]="dropdownValue === 'Christian'" [class.text-white]="dropdownValue === 'Christian'" [class.transparent]="dropdownValue !== 'Christian'" value="Christian" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Christian</button>
+                                <button (click)="updateButtonValue('Hindu')" [class.bg-indigo-600]="dropdownValue === 'Hindu'" [class.text-white]="dropdownValue === 'Hindu'" [class.transparent]="dropdownValue !== 'Hindu'" value="Hindu" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Hindu</button>
+                                <button (click)="updateButtonValue('Others')" [class.bg-indigo-600]="dropdownValue === 'Others'" [class.text-white]="dropdownValue === 'Others'" [class.transparent]="dropdownValue !== 'Others'" value="Others" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Others</button>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+                
+                <div class="sm:flex justify-between">
+                    <button (click)="deleteAccount($event)" class="sm:w-auto w-full bg-red-600 text-white text-center font-semibold px-10 py-2 rounded-md block">
+                        Delete Account
+                    </button>
+                    <button type="submit" class="sm:w-auto w-full bg-indigo-600 text-white text-center font-semibold px-10 py-2 rounded-md block">
+                        Update Profile
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="lg:col-span-5 lg:mt-0 mt-10">
+            <form [formGroup]="changePassword" (ngSubmit)="changePasswordSubmit()" class="px-5 md:py-6 py-5 bg-white border-2 border-gray-200 rounded-lg shadow-lg">
+                <div class="mb-4">
+                    <label for="oldPassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Old Password</label>
+                    <div class="relative">
+                        <input [type]="!isOldPasswordShow?'password':'text'" id="oldPassword" formControlName="oldPassword" placeholder="Enter you old password" class="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white  focus:border-gray-600 focus:outline-none">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                            <ng-icon (click)="isOldPasswordShow=!isOldPasswordShow" [name]="!isOldPasswordShow?'bootstrapEyeFill':'bootstrapEyeSlashFill'" class="text-gray-600 text-xl cursor-pointer"></ng-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="newPassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">New Password</label>
+                    <div class="relative">
+                        <input [type]="!isNewPasswordShow?'password':'text'" id="newPassword" formControlName="newPassword" placeholder="Enter you new password" class="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white  focus:border-gray-600 focus:outline-none">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                            <ng-icon (click)="isNewPasswordShow=!isNewPasswordShow" [name]="!isNewPasswordShow?'bootstrapEyeFill':'bootstrapEyeSlashFill'" class="text-gray-600 text-xl cursor-pointer"></ng-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="confirmPassword" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Confirm Password</label>
+                    <div class="relative">
+                        <input [type]="!isConfirmPasswordShow?'password':'text'" id="confirmPassword" formControlName="confirmPassword" placeholder="Enter you confirm password" class="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white  focus:border-gray-600 focus:outline-none">
+                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                            <ng-icon (click)="isConfirmPasswordShow=!isConfirmPasswordShow" [name]="!isConfirmPasswordShow?'bootstrapEyeFill':'bootstrapEyeSlashFill'" class="text-gray-600 text-xl cursor-pointer"></ng-icon>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" [disabled]="changePswBtn" [class.cursor-not-allowed]="changePswBtn" class="sm:w-auto mt-5 lg:w-full w-full bg-indigo-600 text-white text-center font-semibold px-10 py-2 rounded-md mx-auto block">
+                    Change Password
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+</section>

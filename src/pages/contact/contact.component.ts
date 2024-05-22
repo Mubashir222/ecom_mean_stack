@@ -1,42 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderComponent } from 'src/components/loader/loader.component';
 import { LoadingComponent } from 'src/components/loading/loading.component';
-import { AuthService } from 'src/services/auth.service';
+import { UserServices } from 'src/services/user.services';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [FormsModule, LoaderComponent, LoadingComponent],
+  imports: [FormsModule, LoadingComponent],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css'
 })
-export class ContactComponent implements OnInit{
+export class ContactComponent {
   contactForm: ContactModel;
   isLoading: boolean = false;
-  isSubmitted: boolean = false;
 
-  constructor(private authServices: AuthService, private toastr: ToastrService) {
+  constructor(private userServices: UserServices, private toastr: ToastrService) {
     this.contactForm = new ContactModel();
   }
 
-  ngOnInit() {
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
-  }
-
   submitForm(event: Event): void {
-    event.preventDefault(); // Prevent default form submission
+    event.preventDefault();
 
     if(this.contactForm.name === '' || this.contactForm.email === '' || this.contactForm.subject === '' || this.contactForm.message === '') {
       this.toastr.error('All fields are required');
       return;
     }
-    this.isSubmitted = true;
-    this.authServices.storeContact(this.contactForm).subscribe({
+
+    this.isLoading = true;
+
+    this.userServices.storeContact(this.contactForm).subscribe({
       next: (response) => {
         this.contactForm = new ContactModel();
         this.toastr.success(response.message);
@@ -45,7 +39,7 @@ export class ContactComponent implements OnInit{
       }
     });
     setInterval(() => {
-      this.isSubmitted = false;
+      this.isLoading = false;
     }, 1500);
   }
 
