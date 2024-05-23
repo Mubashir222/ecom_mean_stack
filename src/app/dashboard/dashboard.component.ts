@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServices } from '../../services/user.services';
+import { UserServices } from '../../services/user.service';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { LoadingComponent } from 'src/components/loading/loading.component';
 import { bootstrapPencilFill, bootstrapTrashFill, bootstrapCheckLg, bootstrapXLg } from "@ng-icons/bootstrap-icons";

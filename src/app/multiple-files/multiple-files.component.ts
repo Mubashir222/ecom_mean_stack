@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { UserServices } from '../../services/user.services';
+import { UserServices } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { LoaderComponent } from 'src/components/loader/loader.component';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {bootstrapTrash, bootstrapDownload} from "@ng-icons/bootstrap-icons"
+import { LoadingComponent } from 'src/components/loading/loading.component';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-multiple-files',
   standalone: true,
-  imports: [CommonModule, NgIconComponent, LoaderComponent],
+  imports: [CommonModule, NgIconComponent, LoadingComponent],
   templateUrl: './multiple-files.component.html',
   styleUrls: ['./multiple-files.component.css'],
   viewProviders: [provideIcons({bootstrapTrash, bootstrapDownload})]
@@ -45,7 +46,6 @@ export class MultipleFilesComponent implements OnInit {
     }
   }
   
-
   upload(file: File): void {
     if (file) {
       this.isLoading = true;
@@ -55,21 +55,47 @@ export class MultipleFilesComponent implements OnInit {
           this.toastr.success(msg);
           this.selectedFiles = undefined;
           this.selectedFiles = undefined;
-          setTimeout(() => {
-            this.getFileInfos();
-          }, 5000);
+          setInterval(() => {
+            this.toastr.clear();
+          }, 1000);
         },
         error: (error) => {
           console.error('Error uploading file:', error);
           const msg = file.name + ": Failed!";
           this.toastr.error(msg);
+        },complete: () => {
+          setTimeout(() => {
+            this.getFileInfos();
+            this.isLoading = false;
+          }, 1500);
         }
-    });
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 1000);
+      });
     }
   }
+
+
+  // upload(file: File): void {
+  //   if (file) {
+  //     this.isLoading = true;
+  //     this.uploadService.uploadFiles(file).subscribe({
+  //       next: (response) => {
+  //         const msg = file.name + ": Successfuly Upload!";
+  //         this.toastr.success(msg);
+  //         this.selectedFiles = undefined;
+  //         this.selectedFiles = undefined;
+  //       },
+  //       error: (error) => {
+  //         console.error('Error uploading file:', error);
+  //         const msg = file.name + ": Failed!";
+  //         this.toastr.error(msg);
+  //       }
+  //   });
+  //   setTimeout(() => {
+  //     this.getFileInfos();
+  //     this.isLoading = false;
+  //   }, 1500);
+  //   }
+  // }
 
   getFileInfos(): void {
     this.uploadService.getFiles().subscribe({
@@ -88,7 +114,7 @@ export class MultipleFilesComponent implements OnInit {
       next: (response) => {
         const msg = file.file.split("files\\")[1] + ": Successfully Deleted!";
         this.toastr.success(msg);
-        this.getFileInfos(); // Refresh file list after successful deletion
+        this.getFileInfos();
       },
       error: (error) => {
         console.error('Error deleting file:', error);
@@ -98,7 +124,8 @@ export class MultipleFilesComponent implements OnInit {
     });
     setTimeout(() => {
       this.isLoading = false;
-    }, 2000);
+      this.toastr.clear();
+    }, 1000);
   }
 
   downloadFiles(id: any, file: any): void {
@@ -121,19 +148,5 @@ export class MultipleFilesComponent implements OnInit {
       }
     });
   }
-  
-  
-  // downloadFiles(file: any): void {
-  //   console.log(file)
-  //   this.uploadService.downloadFiles(file).subscribe({
-  //     next: (response) => {
-  //       this.toastr.success("Downloading file...");
-  //     },
-  //     error: (error) => {
-  //       console.error('Error downloading file:', error);
-  //       this.toastr.error("Failed to download file!");
-  //     }
-  //   });
-  // }
 
 }

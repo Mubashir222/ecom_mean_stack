@@ -1,7 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { Component, Injectable, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
-import { UserServices } from '../../services/user.services';
+import { FormBuilder, ReactiveFormsModule, Validators, FormGroup, ValidatorFn, AbstractControl } from '@angular/forms';
+import { UserServices } from '../../services/user.service';
 import { UploadImgComponent } from '../upload-img/upload-img.component';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
@@ -19,6 +19,7 @@ import { LoaderComponent } from 'src/components/loader/loader.component';
   templateUrl: './forms.component.html',
   styleUrls: ['./forms.component.css']
 })
+
 
 export class FormsComponent implements OnInit{
   userForm: FormGroup;
@@ -39,18 +40,17 @@ export class FormsComponent implements OnInit{
     this.dropdownOpen = false;
   }
 
-
   constructor(private formBuilder: FormBuilder, private userService: UserServices, private toastr: ToastrService) {
     this.userForm = this.formBuilder.group({
-      firstname: ['', [Validators.required]],
-      lastname: ['', [Validators.required]],
+      firstname: ['', [Validators.required, Validators.minLength(3)]],
+      lastname: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
-      religion: '',
-      company: '',
-      phoneNo: '',
-      websiteUrl: '',
+      religion: ['', [Validators.required]],
+      company: ['', [Validators.required]],
+      phoneNo: ['', [Validators.required]],
+      websiteUrl: ['', [Validators.required]],
       gender: 'Male',
       profileImg: ''
     });
@@ -86,34 +86,62 @@ export class FormsComponent implements OnInit{
     }
   }
 
-  onSubmit() {  
-    let formIsValid = true;
+  async onSubmit() {
+    if(this.uploadImg == null) {
+      this.toastr.error('Please select an image to upload');
+      return;
+    }else {
+      await this.imgUpload();
+    
+      console.log(this.userForm.value)
   
-    // Iterate over each form control
-    Object.keys(this.userForm.controls).forEach(field => {
-      const control = this.userForm.get(field);
-      // Skip the phoneNo field
-      if (field !== 'phoneNo' && control && !control.valid) {
-        // Log the field name and error message to the console
-        console.error(`Field '${field}' is not valid:`, control.errors);
-        formIsValid = false;
-      }
-    });
-  
-    if (formIsValid) {
-      this.userService.submitForm(this.userForm.value).subscribe({
-        next: (response) => {
-          this.uploadFiles();
-          this.toastr.success(response.message);
-          this.userForm.reset();
-        },
-        error: (error) => {
-          console.error('Error submitting form:', error);
-        }
-      });
+      if(this.userForm.value.profileImg === '') {
+        this.toastr.error('Please select an image to upload');
+        return;
+      }else {
+        this.userService.submitForm(this.userForm.value).subscribe({
+          next: (response) => {
+            // this.uploadFiles();
+            this.toastr.success(response.message);
+            this.userForm.reset();
+          },
+          error: (error) => {
+            console.error('Error submitting form:', error);
+          }
+        });
+      }  
     }
   }
+
+  imgUpload(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.uploadImg) {
+        const formData = new FormData();
+        formData.append('image', this.uploadImg);
   
+        this.userService.uploadImg(formData).subscribe({
+          next: (response) => {
+            if (response.imagePath) {
+              this.userForm.patchValue({ profileImg: response.imagePath });
+              console.log(response.imagePath, this.userForm.value);
+              resolve();  // Resolve the promise when the image is successfully uploaded
+            } else {
+              this.toastr.error('Failed to get image path from response.');
+              reject('Failed to get image path from response.');
+            }
+          },
+          error: (error) => {
+            console.error('Error storing file:', error);
+            reject(error);  // Reject the promise if there's an error
+          }
+        });
+      } else {
+        this.toastr.error('Please select an image to upload');
+        reject('No image selected');
+      }
+    });
+  }
+
   async onFileChange(event: any) {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement && inputElement.files && inputElement.files.length > 0) {
@@ -121,26 +149,6 @@ export class FormsComponent implements OnInit{
       if (file.size <= 2 * 1024 * 1024) {
         this.uploadImg = file;
         this.showImg = window.URL.createObjectURL(file);
-
-        // Create a FormData object
-        const formData = new FormData();
-  
-        // Append the file to the FormData object
-        formData.append('image', file);
-  
-        // Pass the FormData object to the uploadImg method
-      this.userService.uploadImg(formData).subscribe({
-        next: (response) => {
-          if(response.imagePath) {
-            // Store the imagePath in the profileImg field of userForm
-            this.userForm.patchValue({ profileImg: response.imagePath });
-            this.toastr.success('Image stored successfully.');
-          }         
-        },
-        error: (error) => {
-          console.error('Error storing file:', error);
-        }
-      });
       } else {
         this.uploadImg = null;
         this.showImg = null;
@@ -148,6 +156,7 @@ export class FormsComponent implements OnInit{
       }
     }
   }
+
   getProfileImgUrl() {
     return this.showImg || '';
   }

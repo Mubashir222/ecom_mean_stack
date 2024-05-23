@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { LoadingComponent } from 'src/components/loading/loading.component';
 import { AuthService } from 'src/services/auth.service';
-import { UserServices } from 'src/services/user.services';
+import { UserServices } from 'src/services/user.service';
 
 @Component({
   selector: 'app-user-data',
@@ -15,7 +15,9 @@ export class UserDataComponent implements OnInit{
   usersData: any[] = [];
   contactData: any[] = [];
   isLoading: boolean = false;
-  isSwap: boolean = false;
+  isSwap: boolean = true;
+  isShowMessage: boolean = false;
+  message: string = '';
 
   constructor(private userServices: UserServices, private authServices: AuthService, private toastr: ToastrService) {}
 
@@ -50,6 +52,16 @@ export class UserDataComponent implements OnInit{
 
   swapData(){
     this.isSwap = !this.isSwap;
+  }
+
+  openPopup(msg: string){
+    this.isShowMessage = true;
+    this.message = msg;
+  }
+
+  closePopup(){
+    this.isShowMessage = false;
+    this.message = "";
   }
 
 }

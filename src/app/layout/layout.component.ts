@@ -31,27 +31,19 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUser();
+    this.authServices.currentUser.subscribe(user => {
+      this.currentUser = user;
+    });
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      console.log(this.router.url, this.router.url.includes('pages'))
       if(this.router.url.includes('pages')) {
         this.isPagesLinkActive = true;
       } else {
         this.isPagesLinkActive = false;
       }
     });
-  }
-
-  getUser() {
-    const {token, user} = this.authServices.getLocalData() as { token: string | null; user: any; };
-    if(token && user){
-      this.currentUser = user;
-    }else if(!token || !user){
-      this.authServices.logout();
-    }
-    console.log(this.currentUser)
   }
 
 }

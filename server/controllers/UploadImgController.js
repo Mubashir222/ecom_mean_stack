@@ -29,9 +29,9 @@ exports.uploadImg = async(req, res) => {
       });
     });
     if (req.file && req.file.filename){
-      const imagePath = path.join('/assets/images/', req.file.filename);
+      const imagePath = path.join('assets/images/', req.file.filename);
   
-      console.log(imagePath);
+      console.log(path.join(__dirname, imagePath));
       
       res.status(200).json({ imagePath });
     }

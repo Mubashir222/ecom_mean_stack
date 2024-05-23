@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/services/auth.service';
-import { UserServices } from 'src/services/user.services';
+import { UserServices } from '../../services/user.service';
 import { NgIconComponent, provideIcons } from "@ng-icons/core"
 import { bootstrapEyeFill, bootstrapEyeSlashFill } from '@ng-icons/bootstrap-icons';
 
@@ -17,6 +17,7 @@ import { bootstrapEyeFill, bootstrapEyeSlashFill } from '@ng-icons/bootstrap-ico
 })
 export class ProfileComponent implements OnInit{
   userData: FormGroup;
+  currentUser: any;
   dropdownOpen: boolean = false;
   dropdownValue: string = "Select Religion";
   showImg: string | null = null;
@@ -26,7 +27,6 @@ export class ProfileComponent implements OnInit{
   isOldPasswordShow: boolean = false;
   isNewPasswordShow: boolean = false;
   isConfirmPasswordShow: boolean = false;
-
 
   constructor(private formBuilder: FormBuilder,private userService: UserServices, private authServices: AuthService, private router: Router, private toastr: ToastrService) {
     this.userData = this.formBuilder.group({
@@ -54,17 +54,19 @@ export class ProfileComponent implements OnInit{
   }
 
   setUserData(){
-    const user = this.authServices.getUser();
-    if(user) {
-      const religion = user.religion ? user.religion : "Select Religion";
+    this.authServices.currentUser.subscribe(user => {
+      this.currentUser = user;
+    });
+    if(this.currentUser) {
+      const religion = this.currentUser.religion ? this.currentUser.religion : "Select Religion";
       this.dropdownValue = religion;
       this.userData.patchValue({
-        username: user.username,
-        email: user.email,
-        religion: user.religion,
-        phoneNo: user.phoneNo,
-        profileImg: user.profileImg,
-        description: user.description
+        username: this.currentUser.username,
+        email: this.currentUser.email,
+        religion: this.currentUser.religion,
+        phoneNo: this.currentUser.phoneNo,
+        profileImg: this.currentUser.profileImg,
+        description: this.currentUser.description
       })
     }
   }
@@ -76,19 +78,27 @@ export class ProfileComponent implements OnInit{
       this.authServices.updateProfile(token, {userData: this.userData.value}).subscribe({
         next: (response) => {
           this.toastr.success(response.message);
+
           if(response.user){
             this.authServices.setLocalUser(response.user);
             this.setUserData();
-          }else {
-            this.authServices.logout();
-            this.router.navigateByUrl('/login');
           }
+          
+          else {
+            this.toastr.error('Error while updating profile');
+          }
+
+          console.log(this.currentUser)
+
         },
         error: (error) => {
           this.toastr.error(error.error.message)
           console.error('Error updating profile:', error);
         }
       });
+      setInterval(() => {
+        this.toastr.clear();
+      }, 1000);
     }else {
       this.authServices.logout();
       this.router.navigateByUrl('/login');
@@ -114,7 +124,6 @@ export class ProfileComponent implements OnInit{
       this.userService.uploadImg(formData).subscribe({
         next: (response) => {
           if(response.imagePath) {
-            // Store the imagePath in the profileImg field of userForm
             this.userData.patchValue({ profileImg: response.imagePath });
             this.toastr.success('Image stored successfully.');
           }         
@@ -123,11 +132,14 @@ export class ProfileComponent implements OnInit{
           console.error('Error storing file:', error);
         }
       });
-      } else {
-        this.uploadImg = null;
-        this.showImg = null;
-        this.toastr.error('Image size should be less than or equal to 2MB.');
-      }
+    } else {
+      this.uploadImg = null;
+      this.showImg = null;
+      this.toastr.error('Image size should be less than or equal to 2MB.');
+    }
+    setInterval(() => {
+      this.toastr.clear();
+    }, 1000);
     }
   }
 
