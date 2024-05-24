@@ -5,7 +5,6 @@ import { LoadingComponent } from '../loading/loading.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserServices } from 'src/services/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { CloudinaryService } from 'src/services/cloudinary.service';
 import {provideIcons, NgIconComponent} from "@ng-icons/core"
 import { bootstrapCaretDownFill } from '@ng-icons/bootstrap-icons';
 
@@ -27,7 +26,7 @@ export class AddProductComponent {
   dropdownValue = "Choose your brand";
   isLoading = false;
 
-  constructor(private formBuilder: FormBuilder, private userService: UserServices, private toastr: ToastrService, private cloudinaryService: CloudinaryService) {
+  constructor(private formBuilder: FormBuilder, private userService: UserServices, private toastr: ToastrService) {
     this.userForm = this.formBuilder.group({
       firstname: ['', [Validators.required, Validators.minLength(3)]],
       lastname: ['', [Validators.required, Validators.minLength(3)]],
@@ -115,7 +114,7 @@ export class AddProductComponent {
         const formData = new FormData();
         formData.append('image', this.uploadImg);
   
-        this.cloudinaryService.uploadImage(this.uploadImg).subscribe({
+        this.userService.uploadImg(formData).subscribe({
           next: (response: any) => {
             if (response.secure_url) {
               this.userForm.patchValue({ profileImg: response.secure_url });

@@ -1,12 +1,13 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  apiUrl = "http://localhost:5000/";
+  apiUrl = environment.apiUrl;
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
@@ -26,8 +27,10 @@ export class AuthService {
   }
 
   setLocalUser(user: any) {
-    localStorage.setItem('user', JSON.stringify(user));
-    this.currentUserSubject.next(user);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('user', JSON.stringify(user));
+      this.currentUserSubject.next(user);
+    }
   }
 
   getToken() {
@@ -35,8 +38,12 @@ export class AuthService {
   }
 
   getUser() {
-    const data = localStorage.getItem('user');
-    return data ? JSON.parse(data) : null;
+    if (typeof window !== 'undefined') {
+      const data = localStorage.getItem('user');
+      return data ? JSON.parse(data) : null;
+    } else {
+      return null;
+    }
   }
 
   isAuthorized() {
