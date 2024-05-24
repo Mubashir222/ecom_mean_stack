@@ -1,0 +1,27 @@
+<div class="sm:hidden">
+    <label for="tabs" class="sr-only">Select your tab</label>
+    <select id="tabs"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+        <option routerLink="/profile">Profile</option>
+        <option routerLink="pages/login">Login</option>
+        <option routerLink="/settings">Settings</option>
+        <option routerLink="/invoice">Invoice</option>
+    </select>
+</div>
+
+<ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow sm:flex">
+    <li class="w-full">
+        <a routerLink="/product/add" class="inline-block w-full p-4 transition-all ease-in-out delay-100 duration-150 text-gray-900 bg-gray-100 border-r border-gray-200 rounded-l-lg"
+         routerLinkActive="bg-indigo-600 text-white font-bold">
+            Add Product
+        </a>
+    </li>
+    <li class="w-full">
+        <a routerLink="/product/edit" class="inline-block w-full p-4 transition-all rounded-r-lg ease-in-out delay-100 duration-150 text-gray-900 bg-gray-100 border-r border-gray-200"
+        routerLinkActive="bg-indigo-600 text-white font-bold">
+        Edit Product
+        </a>
+    </li>
+</ul>
+
+<router-outlet></router-outlet>

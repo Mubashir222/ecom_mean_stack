@@ -1,0 +1,128 @@
+@if(isLoading){
+    <app-loading></app-loading>
+}@else {
+
+    <form [formGroup]="userForm">
+        <h1 class="text-4xl font-bold text-center my-5 text-indigo-600 font-serif">Add Product</h1>
+    
+        <div class="grid grid-cols-12 gap-5 my-10">
+            <div class="flex items-center justify-center w-full lg:col-span-8 col-span-6">
+                <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-60 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                        </svg>
+                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                    </div>
+                    <input id="dropzone-file" type="file" class="hidden" (change)="onFileChange($event)" accept="image/png, image/jpg, image/jpeg" />
+                </label>
+            </div> 
+            
+            <div class="lg:col-span-4 col-span-6">
+                @if(showImg){
+                    <img [src]="getProfileImgUrl()" class="w-full h-60 rounded-lg" alt="">
+                }@else {
+                    <img src="/assets/no-product.png" class="w-full h-60 border-2 rounded-lg" alt="">
+                }
+            </div>
+        </div>    
+    
+    
+        <div class="grid gap-6 mb-6 md:grid-cols-12">
+            
+            <div class="col-span-6">
+                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">
+                    First name
+                </label>
+                <input type="text" id="first_name" formControlName="firstname"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="John" required />
+            </div>
+            
+            <div class="col-span-6">
+                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Last name
+                </label>
+                <input type="text" id="last_name" formControlName="lastname"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Doe" required />
+            </div>
+            
+            <div class="col-span-6">
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
+                <input type="email" id="email" formControlName="email"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="john.doe@company.com" required />
+            </div>
+                
+            <div class="col-span-6">
+                <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
+                <input type="text" id="company" formControlName="company"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Agile Tech Studio" required />
+            </div>
+        
+    
+            <div class="col-span-6">
+                <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone number</label>
+                <input type="text" id="phone" formControlName="phoneNo"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="03XX XXXXXXX" pattern="03[0-9]{9}" required />
+            </div>
+            
+            <div class="col-span-6">
+                <label for="website" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Website
+                    URL</label>
+                <input type="text" id="website" formControlName="websiteUrl"
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="agiletechstudio.com" required />
+            </div>
+            
+        </div>
+        
+        <div class="grid grid-cols-2">
+    
+            <div class="flex items-start mb-6">
+                <div class="flex items-center mr-5">
+                    <input id="male" checked type="radio" formControlName="gender" value="Male" name="gender" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300">
+                    <label for="male" class="ms-2 text-sm font-medium text-gray-900">Male</label>
+                </div>
+                <div class="flex items-center mr-5">
+                    <input id="female" type="radio" value="Female" formControlName="gender" name="gender" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300">
+                    <label for="female" class="ms-2 text-sm font-medium text-gray-900">Female</label>
+                </div>
+                <div class="flex items-center mr-5">
+                    <input id="others" type="radio" value="Others" formControlName="gender" name="gender" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300">
+                    <label for="others" class="ms-2 text-sm font-medium text-gray-900">Others</label>
+                </div>        
+            </div>
+        
+        
+            <div class="relative">
+                <button (click)="toggleDropdown()" class="flex justify-between text-black border-2 border-gray-600 font-medium rounded-lg text-sm w-full px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                {{ dropdownValue }}
+                <ng-icon name="bootstrapCaretDownFill" class="text-lg pt-1"></ng-icon>
+                </button>
+                @if(dropdownOpen){
+                    <div class="absolute top-10 p-2 sm:w-[200px] w-auto bg-white border border-gray-300 rounded-lg shadow-lg">
+                        <button (click)="updateButtonValue('Samsung')" [class.bg-black]="dropdownValue === 'Samsung'" [class.text-white]="dropdownValue === 'Samsung'" [class.transparent]="dropdownValue !== 'Samsung'" value="Samsung" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Christian</button>
+                        <button (click)="updateButtonValue('IPhone')" [class.bg-black]="dropdownValue === 'IPhone'" [class.text-white]="dropdownValue === 'IPhone'" [class.transparent]="dropdownValue !== 'IPhone'" value="IPhone" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Islam</button>
+                        <button (click)="updateButtonValue('Xiaomi')" [class.bg-black]="dropdownValue === 'Xiaomi'" [class.text-white]="dropdownValue === 'Xiaomi'" [class.transparent]="dropdownValue !== 'Xiaomi'" value="Xiaomi" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Hindu</button>
+                        <button (click)="updateButtonValue('One Plus')" [class.bg-black]="dropdownValue === 'One Plus'" [class.text-white]="dropdownValue === 'One Plus'" [class.transparent]="dropdownValue !== 'One Plus'" value="One Plus" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Others</button>
+                        <button (click)="updateButtonValue('Other')" [class.bg-black]="dropdownValue === 'Other'" [class.text-white]="dropdownValue === 'Other'" [class.transparent]="dropdownValue !== 'Others'" value="Others" class="block w-full text-gray-600 border border-gray-300 mb-2 py-1 px-2 rounded-lg">Others</button>
+                    </div>
+                }
+            </div>
+    
+        </div>    
+                
+                
+        <button type="submit" (click)="onSubmit()" class="my-10 text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <!-- <button type="submit" (click)="onSubmit()" [disabled]="userForm.invalid" [class.cursor-not-allowed]="userForm.invalid" [class.cursor-pointer]="userForm.valid" class="my-10 text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-10 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> -->
+            Submit
+        </button>
+    
+    </form>
+}
+

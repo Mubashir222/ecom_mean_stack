@@ -15,7 +15,6 @@ import { bootstrapSearch, bootstrapHouseDoorFill, bootstrapClipboardMinusFill, b
   styleUrl: './nested-layout.component.css'
 })
 export class NestedLayoutComponent {
-  currentUser: any;
   currentUrl: string;
 
   constructor(private router: Router) {

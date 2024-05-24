@@ -17,6 +17,9 @@ import { authGuard } from './auth.guard';
 import { ProfileComponent } from 'src/pages/profile/profile.component';
 import { loginGuard } from './login.guard';
 import { NotFoundComponent } from 'src/components/not-found/not-found.component';
+import { ProductComponent } from './product/product.component';
+import { AddProductComponent } from 'src/components/add-product/add-product.component';
+import { EditProductComponent } from 'src/components/edit-product/edit-product.component';
 
 export const routes: Routes = [
     {
@@ -56,6 +59,20 @@ export const routes: Routes = [
             {
                 path: 'cards',
                 component: CardsComponent
+            },
+            {
+                path: 'product',
+                component: ProductComponent,
+                children: [
+                    {
+                        path: "add",
+                        component: AddProductComponent
+                    },
+                    {
+                        path: "edit",
+                        component: EditProductComponent
+                    },
+                ]
             },
             {
                 path: 'multiFiles',
